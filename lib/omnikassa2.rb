@@ -1,7 +1,6 @@
 require "omnikassa2/version"
 require "omnikassa2/refresh"
 require "omnikassa2/announce"
-require "omnikassa2/notify"
 require "omnikassa2/status"
 
 require 'openssl'

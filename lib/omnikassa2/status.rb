@@ -1,25 +1,42 @@
 module Omnikassa2
   class Status
-    attr_accessor :notification_token
+    #attr_accessor :notification_token
 
-    def initialize(notification_token)
-      self.notification_token = notification_token
-    end
+    #def initialize(notification_token)
+    #  #self.notification_token = JSON.parse(notification_token)['notification_token:']
+    #  self.notification_token = notification_token
+    #  #puts '****************'
+    #  #puts notification_token
+    #  #puts '****************'
+    #end
 
     def self.uri
       tmp_url = Omnikassa2.url + '/order/server/api/events/results/merchant.order.status.changed'
       URI(tmp_url)
     end
 
-    def connect
+    def connect(notification_token)
       req = Net::HTTP::Get.new(Omnikassa2::Status.uri)
       req['Authorization'] = "Bearer #{notification_token}"
       @res = Net::HTTP.start(Omnikassa2::Status.uri.hostname, Omnikassa2::Status.uri.port, use_ssl: true) { |http| http.request(req) }
       JSON.parse(@res.body)
     end
 
-    def completed?
-      @res['orderResults']['orderStatus'] == "COMPLETED"
+    def completed?(merchant_order_id)
+      result = JSON.parse(@res.body)
+      puts 'AA'
+      puts result
+      if result['orderResults'].nil?
+        puts  "no order results"
+        return false
+      else
+        result['orderResults'].each do |o|
+          if o['merchantOrderId'].to_i == merchant_order_id.to_i && o['orderStatus'].to_s == 'COMPLETED'
+            puts  "order completed"
+            return true
+          end
+        end
+      end
     end
   end
 end

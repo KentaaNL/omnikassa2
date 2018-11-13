@@ -34,6 +34,9 @@ set at least the following:
 * OMNIKASSA_CURRENCY
 * OMNIKASSA_RETURN_URL
 
+The merchant return url is the page in your application where the user lands
+after completing the transaction on the Rabobank.nl site.
+
 ### Create initializer
 
 Create an initializer in config/initializers/omnikassa.rb to read the

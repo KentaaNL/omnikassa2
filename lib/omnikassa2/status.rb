@@ -24,8 +24,6 @@ module Omnikassa2
 
     def completed?(merchant_order_id)
       result = JSON.parse(@res.body)
-      puts 'AA'
-      puts result
       if result['orderResults'].nil?
         puts  "no order results"
         return false

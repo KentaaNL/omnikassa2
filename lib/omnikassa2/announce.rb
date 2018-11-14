@@ -57,9 +57,13 @@ module Omnikassa2
       end.join(",")
     end
 
-    def connect(access_token)
+    def redirect_url
+      JSON.parse(connect).fetch('redirectUrl')
+    end
+
+    def connect
       req = Net::HTTP::Post.new(Omnikassa2::Announce.uri, 'Content-Type' => 'application/json')
-      req['Authorization'] = "Bearer #{access_token}"
+      req['Authorization'] = "Bearer #{Omnikassa2.access_token}"
       req.body = body.to_json
       res = Net::HTTP.start(Omnikassa2::Announce.uri.hostname, Omnikassa2::Announce.uri.port, use_ssl: true) { |http| http.request(req) }
       return res.body

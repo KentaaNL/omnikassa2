@@ -4,10 +4,9 @@ module Omnikassa2
 
     #def initialize(notification_token)
     #  #self.notification_token = JSON.parse(notification_token)['notification_token:']
+    #  puts JSON.parse(eval(notification_params))['notification_params']
+    #  self.notification_token = notification_params['authentication']
     #  self.notification_token = notification_token
-    #  #puts '****************'
-    #  #puts notification_token
-    #  #puts '****************'
     #end
 
     def self.uri

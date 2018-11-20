@@ -18,7 +18,7 @@ module Omnikassa2
       req['Authorization'] = "Bearer #{notification_token}"
       @res = Net::HTTP.start(Omnikassa2::Status.uri.hostname, Omnikassa2::Status.uri.port, use_ssl: true) { |http| http.request(req) }
       self.data = JSON.parse(@res.body)
-      data if verify_signature
+      verify_signature ? data : []
     end
 
     def verify_signature
@@ -26,10 +26,10 @@ module Omnikassa2
     end
 
     def data_string
-      keys.map do |key|
+      @data_string ||= keys.map do |key|
         path = key.split(' ')
         path.inject(data) { |memo, value| memo.fetch(value, '') }.to_s
-      end.join(",") + data['orderResults'].map do |order_data|
+      end.join(",") + ',' + data['orderResults'].map do |order_data|
         order_keys.map do |key|
           path = key.split(' ')
           path.inject(order_data) { |memo, value| memo.fetch(value, '') }.to_s

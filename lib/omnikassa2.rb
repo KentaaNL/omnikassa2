@@ -5,7 +5,7 @@ require "omnikassa2/status"
 
 require 'openssl'
 require 'net/http'
-require 'Base64'
+require 'base64'
 
 module Omnikassa2
   SETTINGS = :refresh_token, :signing_key, :environment, :merchant_return_url, :currency

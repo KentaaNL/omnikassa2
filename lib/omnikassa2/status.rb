@@ -24,15 +24,15 @@ module Omnikassa2
     end
 
     def data_string
-      keys.map do |key|
+      (keys.map do |key|
         path = key.split(' ')
         path.inject(data) { |memo, value| memo.fetch(value, '') }.to_s
-      end.join(",") + ',' + data['orderResults'].map do |order_data|
+      end + data['orderResults'].map do |order_data|
         order_keys.map do |key|
           path = key.split(' ')
           path.inject(order_data) { |memo, value| memo.fetch(value, '') }.to_s
-        end.join(",")
-      end.join(",")
+        end
+      end).flatten.join(",")
     end
 
     def keys

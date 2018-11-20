@@ -22,17 +22,17 @@ module Omnikassa2
     end
 
     def verify_signature
-      OpenSSL::HMAC.hexdigest(OpenSSL::Digest.new('sha512'), 'X6pcHKtG0pPiH8wi06iH/MAdpv0y7cc+ZMfTiN2YGXc=', data_string) == data['signature']
+      OpenSSL::HMAC.hexdigest(OpenSSL::Digest.new('sha512'), Omnikassa2.signing_key, data_string) == data['signature']
     end
 
     def data_string
       keys.map do |key|
         path = key.split(' ')
-        path.inject(data) { |memo, value| memo.fetch(value, '').to_s }
+        path.inject(data) { |memo, value| memo.fetch(value, '') }.to_s
       end.join(",") + data['orderResults'].map do |order_data|
         order_keys.map do |key|
           path = key.split(' ')
-          path.inject(order_data) { |memo, value| memo.fetch(value, '').to_s }
+          path.inject(order_data) { |memo, value| memo.fetch(value, '') }.to_s
         end.join(",")
       end.join(",")
     end

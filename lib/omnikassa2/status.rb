@@ -21,19 +21,9 @@ module Omnikassa2
       JSON.parse(@res.body)
     end
 
-    def completed?(merchant_order_id)
-      result = JSON.parse(@res.body)
-      if result['orderResults'].nil?
-        puts  "no order results"
-        return false
-      else
-        result['orderResults'].each do |o|
-          if o['merchantOrderId'].to_i == merchant_order_id.to_i && o['orderStatus'].to_s == 'COMPLETED'
-            puts  "order completed"
-            return true
-          end
-        end
-      end
+    def results
+      result = JSON.parse(@res.body) || []
+      result['orderResults'].map { |res| [res['merchantOrderId'], res['orderStatus']] }.to_h
     end
   end
 end

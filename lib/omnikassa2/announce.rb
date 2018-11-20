@@ -23,10 +23,12 @@ module Omnikassa2
         "merchantOrderId" => params[:merchant_order_id],
         "amount" =>
           {
-            "amount" =>  (params[:amount].to_f * 100).to_i.to_s,
+            "amount" =>  params[:amount].to_i.to_s,
             "currency" => Omnikassa2.currency,
           },
-        "merchantReturnURL" => Omnikassa2.merchant_return_url
+        "merchantReturnURL" => Omnikassa2.merchant_return_url,
+        "paymentBrand" => params[:payment_brand],
+        "paymentBrandForce" => "FORCE_ALWAYS"
       }
     end
 
@@ -46,7 +48,9 @@ module Omnikassa2
         'amount amount',
         'language',
         'description',
-        'merchantReturnURL'
+        'merchantReturnURL',
+        'paymentBrand',
+        'paymentBrandForce'
       ]
     end
 

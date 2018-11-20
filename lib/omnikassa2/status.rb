@@ -54,7 +54,7 @@ module Omnikassa2
         'paidAmount currency',
         'paidAmount amount',
         'totalAmount currency',
-        'totalAmount amount '
+        'totalAmount amount'
       ]
     end
 

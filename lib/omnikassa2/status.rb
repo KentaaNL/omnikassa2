@@ -23,10 +23,12 @@ module Omnikassa2
     end
 
     def get_results
+      i = 0
       return @order_results unless @order_results.nil?
       @order_results = []
       moreOrderResultsAvailable = true
-      while moreOrderResultsAvailable
+      while moreOrderResultsAvailable && i < 100
+        i += 1
         data = connect
         @order_results = @order_results + data['orderResults']
         moreOrderResultsAvailable = data['moreOrderResultsAvailable']

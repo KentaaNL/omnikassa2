@@ -4,6 +4,8 @@ module Omnikassa2
 
     def initialize(notification_token)
       self.notification_token = notification_token
+      self.data  = {"signature"=>"ee778bec954c7765f4ae62f11c217bbb4bf44901741d3c66b36cb298b2147708e6ebc921db131bacd264f66d5dec8d9e572ede5bc4953e49b940aeb74c155ea5", "moreOrderResultsAvailable"=>false, "orderResults"=>[{"merchantOrderId"=>"xvBypP9WJE", "omnikassaOrderId"=>"4b598237-360b-4000-8009-89a62b8c6d2c", "poiId"=>"10181", "orderStatus"=>"COMPLETED", "orderStatusDateTime"=>"2018-11-20T13:54:31.552+01:00", "errorCode"=>"", "paidAmount"=>{"currency"=>"EUR", "amount"=>"2000"}, "totalAmount"=>{"currency"=>"EUR", "amount"=>"2000"}}]}
+      verify_signature
     end
 
     def self.uri
@@ -20,7 +22,7 @@ module Omnikassa2
     end
 
     def verify_signature
-      OpenSSL::HMAC.hexdigest(OpenSSL::Digest.new('sha512'), Omnikassa2.signing_key, data_string) == data['signature']
+      OpenSSL::HMAC.hexdigest(OpenSSL::Digest.new('sha512'), 'X6pcHKtG0pPiH8wi06iH/MAdpv0y7cc+ZMfTiN2YGXc=', data_string) == data['signature']
     end
 
     def data_string
@@ -28,11 +30,11 @@ module Omnikassa2
         path = key.split(' ')
         path.inject(data) { |memo, value| memo.fetch(value, '').to_s }
       end.join(",") + data['orderResults'].map do |order_data|
-        order_keys do |key|
+        order_keys.map do |key|
           path = key.split(' ')
           path.inject(order_data) { |memo, value| memo.fetch(value, '').to_s }
         end.join(",")
-      end
+      end.join(",")
     end
 
     def keys

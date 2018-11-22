@@ -17,7 +17,7 @@ module Omnikassa2
       Time.now.iso8601(3)
     end
 
-    def data
+    def request_data
       {
         "timestamp" => timestamp,
         "merchantOrderId" => params[:merchant_order_id],
@@ -32,15 +32,15 @@ module Omnikassa2
       }
     end
 
-    def signature
-      OpenSSL::HMAC.hexdigest(OpenSSL::Digest.new('sha512'), Omnikassa2.signing_key, data_string)
+    def request_signature
+      OpenSSL::HMAC.hexdigest(OpenSSL::Digest.new('sha512'), Omnikassa2.signing_key, request_data_string)
     end
 
-    def body
-      data.merge('signature' => signature)
+    def request_body
+      request_data.merge('signature' => request_signature)
     end
 
-    def keys
+    def request_keys
       [
         'timestamp',
         'merchantOrderId',
@@ -54,39 +54,36 @@ module Omnikassa2
       ]
     end
 
-    def data_string
-      keys.map do |key|
-        path = key.split(' ')
-        path.inject(data) { |memo, value| memo.fetch(value, '') }
-      end.join(",")
+    def request_data_string
+      sign_data(request_keys, request_data).join(',')
     end
 
     def redirect_url
-      @redirect_url ||= data['redirectUrl'] if data.present? && verify_signature
+      @redirect_url ||= response_data['redirectUrl'] if response_data.present? && verify_response_signature
     end
 
-    def data
-      @data ||= connect
+    def response_data
+      @response_data ||= connect
     end
 
     def connect
       req = Net::HTTP::Post.new(Omnikassa2::Announce.uri, 'Content-Type' => 'application/json')
       req['Authorization'] = "Bearer #{Omnikassa2.access_token}"
-      req.body = body.to_json
+      req.body = request_body.to_json
       res = Net::HTTP.start(Omnikassa2::Announce.uri.hostname, Omnikassa2::Announce.uri.port, use_ssl: true) { |http| http.request(req) }
       JSON.parse(res.body)
     end
 
-    def verify_signature
-      data.nil? || data['signature'] == data_signature
+    def verify_response_signature
+      response_data.nil? || response_data['signature'] == response_data_signature
     end
 
-    def data_signature
-      OpenSSL::HMAC.hexdigest(OpenSSL::Digest.new('sha512'), Omnikassa2.signing_key, data_string)
+    def response_data_signature
+      OpenSSL::HMAC.hexdigest(OpenSSL::Digest.new('sha512'), Omnikassa2.signing_key, response_data_string)
     end
 
-    def data_string
-      sign_data(keys, data).join(',')
+    def response_data_string
+      sign_data(response_keys, response_data).join(',')
     end
 
     def sign_data sign_keys, values
@@ -95,7 +92,7 @@ module Omnikassa2
       end
     end
 
-    def keys
+    def response_keys
       [
         'redirectUrl'
       ]

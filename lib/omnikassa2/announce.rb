@@ -62,7 +62,11 @@ module Omnikassa2
     end
 
     def redirect_url
-      JSON.parse(connect).fetch('redirectUrl')
+      @redirect_url ||= data['redirectUrl'] if data.present? && verify_signature
+    end
+
+    def data
+      @data ||= connect
     end
 
     def connect
@@ -70,8 +74,31 @@ module Omnikassa2
       req['Authorization'] = "Bearer #{Omnikassa2.access_token}"
       req.body = body.to_json
       res = Net::HTTP.start(Omnikassa2::Announce.uri.hostname, Omnikassa2::Announce.uri.port, use_ssl: true) { |http| http.request(req) }
-      return res.body
+      JSON.parse(res.body)
     end
 
+    def verify_signature
+      data.nil? || data['signature'] == data_signature
+    end
+
+    def data_signature
+      OpenSSL::HMAC.hexdigest(OpenSSL::Digest.new('sha512'), Omnikassa2.signing_key, data_string)
+    end
+
+    def data_string
+      sign_data(keys, data).join(',')
+    end
+
+    def sign_data sign_keys, values
+      sign_keys.map do |key|
+        key.split(' ').inject(values) { |memo, value| memo.fetch(value, '') }.to_s
+      end
+    end
+
+    def keys
+      [
+        'redirectUrl'
+      ]
+    end
   end
 end

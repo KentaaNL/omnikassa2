@@ -1,6 +1,8 @@
 require "omnikassa2/version"
 require "omnikassa2/refresh"
 require "omnikassa2/announce"
+require "omnikassa2/payment_return"
+require "omnikassa2/notification"
 require "omnikassa2/status"
 
 require 'openssl'
@@ -36,8 +38,7 @@ module Omnikassa2
   end
 
   def self.environment
-    #@@environment || "sandbox"
-    "sandbox"
+    @@environment || "sandbox"
   end
 
   def self.url

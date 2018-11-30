@@ -47,9 +47,7 @@ if ENV['OMNIKASSA_REFRESH_TOKEN'].present?
   Omnikassa2.config(
     refresh_token:       ENV['OMNIKASSA_REFRESH_TOKEN'],
     signing_key:         ENV['OMNIKASSA_SIGNING_KEY'],
-    currency:            ENV['OMNIKASSA_CURRENCY'],
-    environment:         ENV['RAILS_ENV'],
-    merchant_return_url: ENV['OMNIKASSA_RETURN_URL']
+    environment:         ENV['RAILS_ENV']
   )
 end
 ````

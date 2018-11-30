@@ -1,5 +1,4 @@
 require "omnikassa2/version"
-require "omnikassa2/refresh"
 require "omnikassa2/announce"
 require "omnikassa2/payment_return"
 require "omnikassa2/notification"
@@ -10,7 +9,7 @@ require 'net/http'
 require 'base64'
 
 module Omnikassa2
-  SETTINGS = :refresh_token, :signing_key, :environment, :merchant_return_url, :currency
+  SETTINGS = :refresh_token, :signing_key, :base_url
 
   def self.config(settings)
     for setting in SETTINGS
@@ -41,20 +40,8 @@ module Omnikassa2
     @@environment || "sandbox"
   end
 
-  def self.url
-    if environment == 'production'
-      "https://betalen.rabobank.nl/omnikassa-api"
-    else
-      "https://betalen.rabobank.nl/omnikassa-api-sandbox"
-    end
-  end
-
-  def self.merchant_return_url
-    @@merchant_return_url
-  end
-
-  def self.currency
-    @@currency || "EUR"
+  def self.base_url
+    @@base_url
   end
 
   # The common base class for all exceptions raised by OmniKassa

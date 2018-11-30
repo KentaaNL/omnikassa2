@@ -24,9 +24,9 @@ module Omnikassa2
         "amount" =>
           {
             "amount" =>  params[:amount].to_i.to_s,
-            "currency" => Omnikassa2.currency,
+            "currency" => 'EUR',
           },
-        "merchantReturnURL" => Omnikassa2.merchant_return_url,
+        "merchantReturnURL" => 'http://www.google.com', #TODO
         "paymentBrand" => params[:payment_brand],
         "paymentBrandForce" => "FORCE_ALWAYS"
       }

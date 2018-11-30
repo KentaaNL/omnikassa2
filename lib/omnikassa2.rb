@@ -20,10 +20,6 @@ module Omnikassa2
     end
   end
 
-  def self.set_access_token(token)
-    class_variable_set '@@access_token', token
-  end
-
   def self.access_token
     @@access_token
   end

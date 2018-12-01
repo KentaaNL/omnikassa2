@@ -6,14 +6,12 @@ module Omnikassa2
       :get
     end
 
-    def path
-      '/gatekeeper/refresh'
+    def authorization_method
+      :refresh_token
     end
 
-    def headers
-      {
-        'Authorization' => "Bearer #{Omnikassa2.refresh_token}"
-      }
+    def path
+      '/gatekeeper/refresh'
     end
 
     def response_decorator

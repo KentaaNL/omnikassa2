@@ -1,4 +1,6 @@
 require 'webmock/rspec'
+require 'pry'
+
 [
   "lib/**/*.rb",
   "spec/factories/**/*.rb"

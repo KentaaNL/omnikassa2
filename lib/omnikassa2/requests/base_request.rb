@@ -1,15 +1,27 @@
 module Omnikassa2
   class BaseRequest
+    def initialize(params = {})
+      @access_token = params.fetch(:access_token, nil)
+    end
+
     def http_method
       :get
+    end
+
+    def authorization_method
+      nil
+    end
+
+    def content_type
+      nil
     end
 
     def path
       '/'
     end
 
-    def headers
-      {}
+    def body
+      nil
     end
 
     def response_decorator
@@ -17,11 +29,8 @@ module Omnikassa2
     end
 
     def send
-      request = request_class.new(uri)
-
-      headers.each do |name, value|
-        request[name] = value
-      end
+      request = request_class.new(uri, headers)
+      request.body = body
 
       http_response = Net::HTTP.start(
         uri.hostname,
@@ -32,6 +41,13 @@ module Omnikassa2
       end
 
       response_decorator.nil? ? http_response : response_decorator.new(http_response)
+    end
+
+    def headers
+      value = {}
+      add_authorization_header value
+      add_content_type_header value
+      value
     end
 
     private
@@ -52,6 +68,22 @@ module Omnikassa2
     def uri
       tmp_url = Omnikassa2.base_url + path
       URI(tmp_url)
+    end
+
+    def add_authorization_header(value)
+      case authorization_method
+      when :refresh_token
+        value['Authorization'] = "Bearer #{Omnikassa2.refresh_token}"
+      when :access_token
+        value['Authorization'] = "Bearer #{@access_token}"
+      end
+    end
+
+    def add_content_type_header(value)
+      case content_type
+      when :json
+        value['Content-Type'] = 'application/json'
+      end
     end
   end
 end

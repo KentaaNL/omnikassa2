@@ -25,17 +25,17 @@ describe Omnikassa2::RefreshRequest do
 
     it 'uses correct HTTP method' do
       Omnikassa2::RefreshRequest.new.send
-      assert_requested :get, //, times: 1
+      assert_requested :get, //
     end
 
     it 'uses correct URL' do
       Omnikassa2::RefreshRequest.new.send
-      assert_requested :any, 'https://www.example.com/sandbox/gatekeeper/refresh', times: 1
+      assert_requested :any, 'https://www.example.com/sandbox/gatekeeper/refresh'
     end
 
     it 'sets header: \'Authorization: Bearer <refresh-token>\'' do
       Omnikassa2::RefreshRequest.new.send
-      assert_requested :any, //, headers: {'Authorization' => 'Bearer reFresht0ken'}, times: 1
+      assert_requested :any, //, headers: {'Authorization' => 'Bearer reFresht0ken'}
     end
 
     describe 'returned response' do

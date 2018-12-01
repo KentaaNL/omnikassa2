@@ -1,7 +1,7 @@
-require 'omnikassa2/responses/json_response'
+require 'omnikassa2/responses/base_response'
 
 module Omnikassa2
-  class RefreshResponse < JSONResponse
+  class RefreshResponse < BaseResponse
     def access_token
       AccessToken.from_json(json_body)
     end

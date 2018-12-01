@@ -1,5 +1,5 @@
 module Omnikassa2
-  class JSONResponse
+  class BaseResponse
     def initialize(http_response)
       @http_response = http_response
       @body = JSON.parse(@http_response.body)

@@ -1,19 +1,23 @@
-require 'omnikassa2/responses/refresh_response'
+require 'omnikassa2/requests/base_request'
 
 module Omnikassa2
-  class RefreshRequest
-    def send
-      req = Net::HTTP::Get.new(uri)
-      req['Authorization'] = "Bearer #{Omnikassa2.refresh_token}"
-      http_response = Net::HTTP.start(uri.hostname, uri.port, use_ssl: true) { |http| http.request(req) }
-      Omnikassa2::RefreshResponse.new(http_response)
+  class RefreshRequest < BaseRequest
+    def http_method
+      :get
     end
 
-    private
+    def path
+      '/gatekeeper/refresh'
+    end
 
-    def uri
-      tmp_url = Omnikassa2.base_url + '/gatekeeper/refresh'
-      URI(tmp_url)
+    def headers
+      {
+        'Authorization' => "Bearer #{Omnikassa2.refresh_token}"
+      }
+    end
+
+    def response_decorator
+      RefreshResponse
     end
   end
 end

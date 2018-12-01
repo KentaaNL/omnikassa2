@@ -1,4 +1,3 @@
-require 'pry'
 require 'time'
 
 module Omnikassa2
@@ -26,6 +25,10 @@ module Omnikassa2
 
     def is_expiring?
       (Time.now + EXPIRATION_MARGIN_SECONDS) - @valid_until > 0
+    end
+
+    def to_s
+      token
     end
   end
 end

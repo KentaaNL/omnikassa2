@@ -15,8 +15,14 @@ module Omnikassa2
       first = true
       @config.each do |config_hash|
         name = config_hash.fetch(:name)
+        names = name.kind_of?(Array) ? name : [name]
         include_if_empty = config_hash.fetch(:include_if_empty, false)
-        value = ruby_hash.fetch(name, nil)
+
+        value = ruby_hash
+        names.each do |name|
+          next if value.nil?
+          value = value.fetch(name, nil)
+        end
 
         next if value.nil? && !include_if_empty
         output += !first ? ',' : ''

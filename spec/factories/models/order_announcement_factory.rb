@@ -5,7 +5,7 @@ class OrderAnnouncementFactory
       amount: params.fetch(:amount, Omnikassa2::MoneyAmount.new(
         amount: 4999
       )),
-      merchant_return_url: 'http://www.example.org/order-completed'
+      merchant_return_url: params.fetch(:merchant_return_url,'http://www.example.org/order-completed')
     )
   end
 end

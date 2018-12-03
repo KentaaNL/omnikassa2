@@ -100,4 +100,18 @@ describe Omnikassa2::SignatureProvider do
 
     expect(signature).to eq(hash('Hello World,'))
   end
+
+  it 'supports nested values' do
+    provider = Omnikassa2::SignatureProvider.new([
+      { name: [:outer, :inner] }
+    ])
+
+    signature = provider.sign({
+      outer: {
+        inner: 'Hello World'
+      }
+    })
+
+    expect(signature).to eq(hash('Hello World'))
+  end
 end

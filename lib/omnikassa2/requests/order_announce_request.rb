@@ -25,32 +25,40 @@ module Omnikassa2
       '/order/server/api/order'
     end
 
-    def signature_provider
-      SignatureProvider.new
-    end
-
     def body
       body = unsigned_body
-      # body['signature'] = signature_provider.sign unsigned_body
-      body['signature'] = 'TODO'
+      body['signature'] = OrderAnnounceRequest.signature_provider.sign unsigned_body
       body
-    end
-
-    def unsigned_body
-      {
-        'timestamp': Time.now.iso8601(3),
-        'merchantOrderId': @order_announcement.merchant_order_id,
-        'amount': {
-          'amount': @order_announcement.amount.amount.to_s,
-          'currency': @order_announcement.amount.currency
-        },
-        'merchantReturnURL': @order_announcement.merchant_return_url,
-        'signature': 'TODO'#TODO
-      }
     end
 
     def response_decorator
       Omnikassa2::OrderAnnounceResponse
+    end
+
+    private
+
+    def unsigned_body
+      {
+        timestamp: Time.now.iso8601(3),
+        merchantOrderId: @order_announcement.merchant_order_id,
+        amount: {
+          amount: @order_announcement.amount.amount.to_s,
+          currency: @order_announcement.amount.currency
+        },
+        merchantReturnURL: @order_announcement.merchant_return_url,
+      }
+    end
+
+    def self.signature_provider
+      Omnikassa2::SignatureProvider.new([
+        { name: :timestamp },
+        { name: :merchantOrderId },
+        { name: [:amount, :currency] },
+        { name: [:amount, :amount ] },
+        { name: :language, include_if_empty: true },
+        { name: :description, include_if_empty: true },
+        { name: :merchantReturnURL }
+      ])
     end
   end
 end

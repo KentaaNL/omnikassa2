@@ -25,7 +25,7 @@ module Omnikassa2
     end
 
     def response_decorator
-      Omnikassa2::BaserResponse
+      Omnikassa2::BaseResponse
     end
 
     def send

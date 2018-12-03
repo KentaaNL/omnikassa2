@@ -5,27 +5,28 @@ describe Omnikassa2::OrderAnnounceRequest do
   before(:each) do
     Omnikassa2.config(
       ConfigurationFactory.create(
-        base_url: 'https://www.example.com/sandbox'
+        signing_key: 'bXlTMWduaW5nSzN5', # Base64.encode64('myS1gningK3y')
+        base_url: 'https://www.example.org/sandbox'
       )
     )
 
-    WebMock.stub_request(:post, "https://www.example.com/sandbox/order/server/api/order")
+    WebMock.stub_request(:post, "https://www.example.org/sandbox/order/server/api/order")
       .to_return(
         body: {
           signature: 's1gnaTuRe',
-          redirectUrl:  "https://www.example.com/pay?token=S0meT0ken&?lang=nl"
+          redirectUrl:  "https://www.example.org/pay?token=S0meT0ken&?lang=nl"
         }.to_json
       )
   end
 
   let(:order_announcement) do
     OrderAnnouncementFactory.create(
-      merchant_order_id: 'myOrderId123',
+      merchant_order_id: 'order123',
       amount: Omnikassa2::MoneyAmount.new(
-        amount: 240,
+        amount: 4999,
         currency: 'EUR'
       ),
-      merchant_return_url: 'http://www.example.org/order-completed'
+      merchant_return_url: 'http://www.example.org'
     )
   end
 
@@ -49,7 +50,7 @@ describe Omnikassa2::OrderAnnounceRequest do
 
     it 'uses correct URL' do
       order_announce_request.send
-      assert_requested :any, 'https://www.example.com/sandbox/order/server/api/order'
+      assert_requested :any, 'https://www.example.org/sandbox/order/server/api/order'
     end
 
     it 'sets header: \'Content-Type: application/json\'' do
@@ -76,7 +77,7 @@ describe Omnikassa2::OrderAnnounceRequest do
         order_announce_request.send
 
         assert_requested(:any, //) do |request|
-          JSON.parse(request.body)['merchantOrderId'] == 'myOrderId123'
+          JSON.parse(request.body)['merchantOrderId'] == 'order123'
         end
       end
 
@@ -84,7 +85,7 @@ describe Omnikassa2::OrderAnnounceRequest do
         order_announce_request.send
 
         assert_requested(:any, //) do |request|
-          JSON.parse(request.body)['amount']['amount'] == '240'
+          JSON.parse(request.body)['amount']['amount'] == '4999'
         end
       end
 
@@ -100,16 +101,17 @@ describe Omnikassa2::OrderAnnounceRequest do
         order_announce_request.send
 
         assert_requested(:any, //) do |request|
-          JSON.parse(request.body)['merchantReturnURL'] == 'http://www.example.org/order-completed'
+          JSON.parse(request.body)['merchantReturnURL'] == 'http://www.example.org'
         end
       end
 
       it 'has a signature' do
+        Timecop.freeze Time.parse('2017-02-06T08:32:51.759+01:00')
         order_announce_request.send
 
         assert_requested(:any, //) do |request|
-          body = JSON.parse(request.body)
-          body.key?('signature') && !body['signature'].empty?
+          HASH = '020f1b1b394a4b433a20499facc9660679154cf96b998e6a4769fbb2b04e3ecd60a8300fdf89c0d6c78aac14c3bc069444cd42e58a852f0c4a4764b8646c9fb7'
+          JSON.parse(request.body)['signature'] == HASH
         end
       end
     end

@@ -3,7 +3,7 @@ describe Omnikassa2::RefreshRequest do
     Omnikassa2.config(
       ConfigurationFactory.create(
         refresh_token: 'reFresht0ken',
-        base_url: 'https://www.example.com/sandbox'
+        base_url: 'https://www.example.org/sandbox'
       )
     )
 
@@ -30,7 +30,7 @@ describe Omnikassa2::RefreshRequest do
 
     it 'uses correct URL' do
       Omnikassa2::RefreshRequest.new.send
-      assert_requested :any, 'https://www.example.com/sandbox/gatekeeper/refresh'
+      assert_requested :any, 'https://www.example.org/sandbox/gatekeeper/refresh'
     end
 
     it 'sets header: \'Authorization: Bearer <refresh-token>\'' do

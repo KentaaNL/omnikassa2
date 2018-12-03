@@ -15,24 +15,12 @@ module Omnikassa2
     end
   end
 
-  def self.set_access_token(token)
-    class_variable_set '@@access_token', token
-  end
-
-  def self.access_token
-    @@access_token
-  end
-
   def self.refresh_token
     @@refresh_token
   end
 
   def self.signing_key
     Base64.decode64(@@signing_key)
-  end
-
-  def self.environment
-    @@environment || "sandbox"
   end
 
   def self.base_url

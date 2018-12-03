@@ -1,9 +1,4 @@
 require "omnikassa2/version"
-require "omnikassa2/announce"
-require "omnikassa2/payment_return"
-require "omnikassa2/notification"
-require "omnikassa2/status"
-
 require 'openssl'
 require 'net/http'
 require 'base64'

@@ -13,6 +13,7 @@ module Omnikassa2
     end
 
     private
+
     def comma_separated_fields(ruby_hash)
       fields(ruby_hash).join(',')
     end

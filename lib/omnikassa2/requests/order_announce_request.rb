@@ -51,13 +51,13 @@ module Omnikassa2
 
     def self.signature_provider
       Omnikassa2::SignatureProvider.new([
-        { name: :timestamp },
-        { name: :merchantOrderId },
-        { name: [:amount, :currency] },
-        { name: [:amount, :amount ] },
-        { name: :language, include_if_empty: true },
-        { name: :description, include_if_empty: true },
-        { name: :merchantReturnURL }
+        { path: :timestamp },
+        { path: :merchantOrderId },
+        { path: [:amount, :currency] },
+        { path: [:amount, :amount ] },
+        { path: :language, include_if_empty: true },
+        { path: :description, include_if_empty: true },
+        { path: :merchantReturnURL }
       ])
     end
   end

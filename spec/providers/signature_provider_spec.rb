@@ -22,7 +22,7 @@ describe Omnikassa2::SignatureProvider do
 
   it 'signs single value' do
     provider = Omnikassa2::SignatureProvider.new([
-      { name: :field_one }
+      { path: :field_one }
     ])
 
     signature = provider.sign({
@@ -34,7 +34,7 @@ describe Omnikassa2::SignatureProvider do
 
   it 'ingores unconfigured fields' do
     provider = Omnikassa2::SignatureProvider.new([
-      { name: :field_one }
+      { path: :field_one }
     ])
 
     signature = provider.sign({
@@ -47,8 +47,8 @@ describe Omnikassa2::SignatureProvider do
 
   it 'signs multiple values' do
     provider = Omnikassa2::SignatureProvider.new([
-      { name: :field_one },
-      { name: :field_two }
+      { path: :field_one },
+      { path: :field_two }
     ])
 
     signature = provider.sign({
@@ -61,8 +61,8 @@ describe Omnikassa2::SignatureProvider do
 
   it 'respects the order of the fields passed in config' do
     provider = Omnikassa2::SignatureProvider.new([
-      { name: :field_one },
-      { name: :field_two }
+      { path: :field_one },
+      { path: :field_two }
     ])
 
     signature = provider.sign({
@@ -75,8 +75,8 @@ describe Omnikassa2::SignatureProvider do
 
   it 'does not include nil values for fields without \'include_if_empty: true\'' do
     provider = Omnikassa2::SignatureProvider.new([
-      { name: :field_one },
-      { name: :field_two }
+      { path: :field_one },
+      { path: :field_two }
     ])
 
     signature = provider.sign({
@@ -89,8 +89,8 @@ describe Omnikassa2::SignatureProvider do
 
   it 'does not include nil values for fields with \'include_if_empty: true\'' do
     provider = Omnikassa2::SignatureProvider.new([
-      { name: :field_one },
-      { name: :field_two, include_if_empty: true }
+      { path: :field_one },
+      { path: :field_two, include_if_empty: true }
     ])
 
     signature = provider.sign({
@@ -103,7 +103,7 @@ describe Omnikassa2::SignatureProvider do
 
   it 'supports nested values' do
     provider = Omnikassa2::SignatureProvider.new([
-      { name: [:outer, :inner] }
+      { path: [:outer, :inner] }
     ])
 
     signature = provider.sign({

@@ -5,31 +5,48 @@ module Omnikassa2
     end
 
     def sign(ruby_hash)
-      OpenSSL::HMAC.hexdigest(OpenSSL::Digest.new('sha512'), Omnikassa2.signing_key, signature_fields(ruby_hash))
+      OpenSSL::HMAC.hexdigest(
+        OpenSSL::Digest.new('sha512'),
+        Omnikassa2.signing_key,
+        comma_separated_fields(ruby_hash)
+      )
     end
 
     private
+    def comma_separated_fields(ruby_hash)
+      fields(ruby_hash).join(',')
+    end
 
-    def signature_fields(ruby_hash)
-      output = ''
-      first = true
+    def fields(ruby_hash)
+      parts = []
       @config.each do |config_hash|
-        name = config_hash.fetch(:name)
-        names = name.kind_of?(Array) ? name : [name]
-        include_if_empty = config_hash.fetch(:include_if_empty, false)
-
-        value = ruby_hash
-        names.each do |name|
-          next if value.nil?
-          value = value.fetch(name, nil)
-        end
-
-        next if value.nil? && !include_if_empty
-        output += !first ? ',' : ''
-        output += value.nil? ? '' : value.to_s
-        first = false
+        value = field ruby_hash, config_hash
+        parts << value unless value.nil?
       end
-      output
+      parts
+    end
+
+    def field(ruby_hash, config_hash)
+      path = config_hash.fetch(:path)
+      include_if_empty = config_hash.fetch(:include_if_empty, false)
+
+      value = extract_value ruby_hash, path
+
+      if value.nil?
+        include_if_empty ? '' : nil
+      else
+        value
+      end
+    end
+
+    def extract_value(ruby_hash, path)
+      path_parts = path.kind_of?(Array) ? path : [path]
+      current_node = ruby_hash
+      path_parts.each do |key|
+        next if current_node.nil?
+        current_node = current_node.fetch(key, nil)
+      end
+      current_node
     end
   end
 end

@@ -5,7 +5,7 @@ module Omnikassa2
 
     def initialize(params)
       @amount = params.fetch(:amount)
-      @currency = params.dig(:currency, 'EUR')
+      @currency = params.fetch(:currency, 'EUR')
     end
   end
 end

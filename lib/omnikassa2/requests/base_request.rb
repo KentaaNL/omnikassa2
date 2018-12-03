@@ -1,7 +1,7 @@
 module Omnikassa2
   class BaseRequest
-    def initialize(params = {})
-      @access_token = params.fetch(:access_token, nil)
+    def initialize(config = {})
+      @access_token = config.fetch(:access_token, nil)
     end
 
     def http_method
@@ -30,7 +30,7 @@ module Omnikassa2
 
     def send
       request = request_class.new(uri, headers)
-      request.body = body
+      request.body = body_raw
 
       http_response = Net::HTTP.start(
         uri.hostname,
@@ -51,6 +51,16 @@ module Omnikassa2
     end
 
     private
+
+    def body_raw
+      return nil if body.nil?
+      return body if content_type.nil?
+
+      case content_type
+      when :json
+        body.to_json
+      end
+    end
 
     def request_class
       case http_method

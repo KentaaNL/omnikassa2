@@ -1,4 +1,5 @@
 require 'omnikassa2/requests/order_announce_request'
+require 'time'
 
 describe Omnikassa2::OrderAnnounceRequest do
   before(:each) do
@@ -17,9 +18,20 @@ describe Omnikassa2::OrderAnnounceRequest do
       )
   end
 
+  let(:order_announcement) do
+    OrderAnnouncementFactory.create(
+      merchant_order_id: 'myOrderId123',
+      amount: Omnikassa2::MoneyAmount.new(
+        amount: 240,
+        currency: 'EUR'
+      ),
+      merchant_return_url: 'http://www.example.org/order-completed'
+    )
+  end
+
   let(:order_announce_request) do
     Omnikassa2::OrderAnnounceRequest.new(
-      order: OrderFactory.create,
+      order_announcement,
       access_token: 'myAcCEssT0k3n'
     )
   end
@@ -50,15 +62,56 @@ describe Omnikassa2::OrderAnnounceRequest do
       assert_requested :any, //, headers: {'Authorization' => 'Bearer myAcCEssT0k3n'}
     end
 
-    # describe 'request body' do
-    #   it 'has timestamp' do
-    #     order_announce_request.send
+    describe 'request body' do
+      it 'has timestamp' do
+        Timecop.freeze Time.parse('2017-02-06T08:32:51.759+01:00')
+        order_announce_request.send
 
-    #     assert_requested(:any, //) do |req|
-    #       binding.pry
-    #       req.body == "abc"
-    #     end
-    #   end
-    # end
+        assert_requested(:any, //) do |request|
+          JSON.parse(request.body)['timestamp'] == '2017-02-06T08:32:51.759+01:00'
+        end
+      end
+
+      it 'has merchantOrderId' do
+        order_announce_request.send
+
+        assert_requested(:any, //) do |request|
+          JSON.parse(request.body)['merchantOrderId'] == 'myOrderId123'
+        end
+      end
+
+      it 'has amount.amount' do
+        order_announce_request.send
+
+        assert_requested(:any, //) do |request|
+          JSON.parse(request.body)['amount']['amount'] == '240'
+        end
+      end
+
+      it 'has amount.currency' do
+        order_announce_request.send
+
+        assert_requested(:any, //) do |request|
+          JSON.parse(request.body)['amount']['currency'] == 'EUR'
+        end
+      end
+
+      it 'has merchantReturnURL' do
+        order_announce_request.send
+
+        assert_requested(:any, //) do |request|
+          JSON.parse(request.body)['merchantReturnURL'] == 'http://www.example.org/order-completed'
+        end
+      end
+
+      it 'has a signature' do
+        order_announce_request.send
+
+        assert_requested(:any, //) do |request|
+          body = JSON.parse(request.body)
+          body.key?('signature') && !body['signature'].empty?
+        end
+      end
+    end
   end
 end

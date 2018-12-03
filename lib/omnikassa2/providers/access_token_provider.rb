@@ -21,7 +21,7 @@ module Omnikassa2
     end
 
     def token_needs_refresh?
-      @access_token.nil? || @access_token.is_expiring?
+      @access_token.nil? || @access_token.expiring?
     end
 
     def refresh_token

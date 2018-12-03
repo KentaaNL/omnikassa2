@@ -23,7 +23,7 @@ module Omnikassa2
       )
     end
 
-    def is_expiring?
+    def expiring?
       (Time.now + EXPIRATION_MARGIN_SECONDS) - @valid_until > 0
     end
 

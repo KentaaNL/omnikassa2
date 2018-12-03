@@ -36,7 +36,7 @@ describe Omnikassa2::AccessToken do
     end
   end
 
-  describe 'is_expiring?' do
+  describe 'expiring?' do
     before do
       Timecop.freeze Time.parse('2016-11-24T17:30:00.000+0000')
     end
@@ -51,7 +51,7 @@ describe Omnikassa2::AccessToken do
       }
 
       it 'returns false' do
-        expect(subject.is_expiring?).to eq(false)
+        expect(subject.expiring?).to eq(false)
       end
     end
 
@@ -65,7 +65,7 @@ describe Omnikassa2::AccessToken do
       }
 
       it 'returns true' do
-        expect(subject.is_expiring?).to eq(true)
+        expect(subject.expiring?).to eq(true)
       end
     end
 
@@ -79,7 +79,7 @@ describe Omnikassa2::AccessToken do
       }
 
       it 'returns true' do
-        expect(subject.is_expiring?).to eq(true)
+        expect(subject.expiring?).to eq(true)
       end
     end
   end

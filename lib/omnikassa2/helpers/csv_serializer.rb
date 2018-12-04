@@ -30,6 +30,9 @@ module Omnikassa2
       nested_fields = config_hash.fetch(:nested_fields, nil)
 
       value = extract_value object, field
+      if(value.kind_of?(Time))
+        value = value.iso8601(3)
+      end
 
       if value.nil?
         include_if_nil ? '' : nil

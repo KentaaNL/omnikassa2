@@ -4,18 +4,20 @@ require 'timecop'
 require 'time'
 
 describe Omnikassa2::AccessToken do
-  base_params = {
-    token: 'SoMeT0KeN',
-    valid_until: Time.parse('2016-11-24T17:30:00.000+0000'),
-    duration_in_millis: 28_800_000
-  }
+  let(:base_params) do
+    {
+      token: 'SoMeT0KeN',
+      valid_until: Time.parse('2016-11-24T17:30:00.123+0000'),
+      duration_in_millis: 28_800_000
+    }
+  end
 
   context 'when creating from JSON' do
     subject {
       Omnikassa2::AccessToken.from_json(
         JSON.generate(
           token: base_params[:token],
-          validUntil: base_params[:valid_until],
+          validUntil: '2016-11-24T17:30:00.123+0000',
           durationInMillis: base_params[:duration_in_millis]
         )
       )
@@ -27,7 +29,7 @@ describe Omnikassa2::AccessToken do
 
     it 'stores validUntill as DateTime' do
       expect(subject.valid_until).to eq(
-        Time.parse('2016-11-24T17:30:00.000+0000')
+        Time.parse('2016-11-24T17:30:00.123+0000')
       )
     end
 
@@ -38,7 +40,7 @@ describe Omnikassa2::AccessToken do
 
   describe 'expiring?' do
     before do
-      Timecop.freeze Time.parse('2016-11-24T17:30:00.000+0000')
+      Timecop.freeze Time.parse('2016-11-24T17:30:00.123+0000')
     end
 
     context 'when valid_until is at least 5 minutes from now' do

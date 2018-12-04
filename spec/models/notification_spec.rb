@@ -4,23 +4,38 @@ require 'timecop'
 require 'time'
 
 describe Omnikassa2::Notification do
-  AUTHENTICATION_TOKEN = 'eyJraWQiOiJOTyIsImFsZyI6IkVTMjU2In0.eyJubyMiOjEyMywibWtpZCI6NSwibm8kIjoibWVyY2hhbnQub3JkZXIuc3RhdHVzLmNoYW5nZWQiLCJjaWQiOiJhYmNkLTEyMzQiLCJleHAiOjE0ODg0NjQ1MDN9.MEUCIHtPFoKmXAc7JNQjj0U5rWpl0zR9RsQvgj_nckHBngHAiEAmbtgrxaiy4cS3BTHd0DJ8md3Rn7V13Nv35m5DurY1wI'
-  SIGNATURE_HASH = '80199f65fc0432dc3ee2ab2ee0a54554c34e297d202c93b612d952355619c9cb5501d6c00e8ad235d8c4312bca8c3f26eb52cfa3307b6044e43979c6007dba97'
+  before(:each) do
+    Omnikassa2.config(
+      ConfigurationFactory.create(
+        signing_key: 'bXlTMWduaW5nSzN5' # Base64.encode64('myS1gningK3y')
+      )
+    )
+  end
 
-  base_params = {
-    authentication: AUTHENTICATION_TOKEN,
-    expiry: Time.parse('2016-11-25T09:53:46.000+01:00'),
-    event_name: 'merchant.order.status.changed',
-    poi_id: 123,
-    signature: SIGNATURE_HASH
-  }
+  let(:authentication_token) do
+    'eyJraWQiOiJOTyIsImFsZyI6IkVTMjU2In0.eyJubyMiOjEyMywibWtpZCI6NSwibm8kIjoibWVyY2hhbnQub3JkZXIuc3RhdHVzLmNoYW5nZWQiLCJjaWQiOiJhYmNkLTEyMzQiLCJleHAiOjE0ODg0NjQ1MDN9.MEUCIHtPFoKmXAc7JNQjj0U5rWpl0zR9RsQvgj_nckHBngHAiEAmbtgrxaiy4cS3BTHd0DJ8md3Rn7V13Nv35m5DurY1wI'
+  end
+
+  let(:signature) do
+    'f3aef18aedb04b9f65c6036414ee8c23762db3d245b5bd48519a81174cd59be8dd8ccd2a269fdbc8ed34f584df2c6b41a3a8944f30d914b82db03e18b51274ef'
+  end
+
+  let(:base_params) do
+    {
+      authentication: authentication_token,
+      expiry: Time.parse('2016-11-25T09:53:46.765+01:00'),
+      event_name: 'merchant.order.status.changed',
+      poi_id: 123,
+      signature: signature
+    }
+  end
 
   context 'when creating from JSON' do
     subject {
       Omnikassa2::Notification.from_json(
         JSON.generate(
           authentication: base_params[:authentication],
-          expiry: base_params[:expiry],
+          expiry: '2016-11-25T09:53:46.765+01:00',
           eventName: base_params[:event_name],
           poiId: base_params[:poi_id],
           signature: base_params[:signature]
@@ -29,12 +44,12 @@ describe Omnikassa2::Notification do
     }
 
     it 'stores authentication as string' do
-      expect(subject.authentication).to eq(AUTHENTICATION_TOKEN)
+      expect(subject.authentication).to eq(authentication_token)
     end
 
     it 'stores expiry as DateTime' do
       expect(subject.expiry).to eq(
-        Time.parse('2016-11-25T09:53:46.000+01:00')
+        Time.parse('2016-11-25T09:53:46.765+01:00')
       )
     end
 
@@ -47,7 +62,7 @@ describe Omnikassa2::Notification do
     end
 
     it 'stores signature as string' do
-      expect(subject.signature).to eq(SIGNATURE_HASH)
+      expect(subject.signature).to eq(signature)
     end
   end
 

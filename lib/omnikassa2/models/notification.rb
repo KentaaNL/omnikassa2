@@ -46,7 +46,7 @@ module Omnikassa2
         { field: :authentication },
         { field: :expiry },
         { field: :event_name },
-        { field: :description }
+        { field: :poi_id }
       ])
     end
   end

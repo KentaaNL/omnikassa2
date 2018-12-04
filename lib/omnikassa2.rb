@@ -43,7 +43,7 @@ module Omnikassa2
   end
 
   def self.announce_order(order_announcement)
-    response = OrderAnnounceRequest.new(order_announcement, request_config).send
+    response = Omnikassa2::OrderAnnounceRequest.new(order_announcement, request_config).send
     raise Omnikassa2::InvalidSignatureError unless response.valid_signature?
     response
   end
@@ -51,7 +51,7 @@ module Omnikassa2
   def self.status_pull(notification)
     more_results_available = true
     while(more_results_available) do
-      response = StatusPullRequest.new(notification, request_config).send
+      response = Omnikassa2::StatusPullRequest.new(notification, request_config).send
       raise Omnikassa2::InvalidSignatureError unless response.valid_signature?
 
       result_set = response.order_result_set

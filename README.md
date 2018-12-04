@@ -1,6 +1,6 @@
 # Omnikassa2
 
-This Gem provides the Ruby on Rails integration for the new Omnikassa 2.0 JSON API from the
+This Gem provides the Ruby integration for the new Omnikassa 2.0 JSON API from the
 Rabobank. The documentation for this API is currently here:
 [Rabobank.nl](https://www.rabobank.nl/images/handleiding-merchant-shop_29920545.pdf)
 
@@ -22,46 +22,56 @@ Or install it yourself as:
     $ gem install omnikassa2
 
 
-## Usage
-
-### Set environment variables
-
-This gem reads it's config and tokens from environment variables. You have to
-set at least the following:
-
-* OMNIKASSA_REFRESH_TOKEN
-* OMNIKASSA_SIGNING_KEY
-* OMNIKASSA_CURRENCY
-* OMNIKASSA_RETURN_URL
-
-The merchant return url is the page in your application where the user lands
-after completing the transaction on the Rabobank.nl site.
-
-### Create initializer
-
-Create an initializer in config/initializers/omnikassa.rb to read the
-environment variables.
+## Configuration
+You can find your `refresh_token` and `signing_key` in Omnikassa's dashboard. The `mode` must either be `:sandbox` or `:production` (see offical documentation).
 
 ```ruby
-if ENV['OMNIKASSA_REFRESH_TOKEN'].present?
-  Omnikassa2.config(
-    refresh_token:       ENV['OMNIKASSA_REFRESH_TOKEN'],
-    signing_key:         ENV['OMNIKASSA_SIGNING_KEY'],
-    environment:         ENV['RAILS_ENV']
-  )
-end
-````
-
-### Create a route
-
-You need a route to process the incoming Notify post from the Rabobank. They
-call it Webhook-url in the Rabobank Dashboard. Set it to something like
-yourapp.com/omnikassa and add this route to your routes file:
-
-```ruby
-    post 'omnikassa' => 'payments#omnikassa_notify'
+Omnikassa2.config(
+  refresh_token: 'my_refresh_token',
+  signing_key: 'my_signing_key',
+  mode: :sandbox
+)
 ```
 
+For [Status Pull](#status-pull), it is required to configure a webhook as well (see official documentation).
+
+## Announce order
+```ruby
+response = Omnikassa2.announce_order(
+  Omnikassa2::MerchantOrder.new(
+    merchant_order_id: 'order123',
+    amount: Money.new(
+      amount: 4999,
+      currency: 'EUR'
+    ),
+    merchant_return_url: 'https://www.example.org/my-webshop'
+  )
+)
+
+redirect_url = response.redirect_url
+
+# Send client to 'redirect_url'
+```
+
+## Status pull
+Performing a status pull is only possible when notified by Omnikassa through a configured webhook in the dashboard.
+
+```ruby
+# pseudocode
+class MyOmnikassaWebhookController
+  def post(request)
+    # Create notification object
+    notification = Omnikassa2::Notification.from_json request.body
+
+    # Use notification object to retrieve statusses
+    Omnikassa2.status_pull(notification) do |order_status|
+      # Do something
+      puts "Order: #{ order_status.merchant_order_id}"
+      puts "Paid amount: #{ order_status.paid_amount.amount }"
+    end
+  end
+end
+```
 
 ## Development
 

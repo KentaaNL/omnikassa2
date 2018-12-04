@@ -46,11 +46,12 @@ module Omnikassa2
       response = StatusPullRequest.new(notification, request_config).send
       raise Omnikassa2::InvalidSignatureError unless response.valid_signature?
 
-      response.order_results.each do |order_result|
+      result_set = response.order_result_set
+      response.result_set.order_results.each do |order_result|
         yield order_result
       end
 
-      more_results_available = response.more_order_results_available
+      more_results_available = result_set.more_order_results_available
     end
   end
 

@@ -1,5 +1,5 @@
 describe Omnikassa2::CSVSerializer do
-  it 'signs single value' do
+  it 'includes single value' do
     exporter = Omnikassa2::CSVSerializer.new([
       { field: :field_one }
     ])
@@ -24,7 +24,7 @@ describe Omnikassa2::CSVSerializer do
     expect(csv_string).to eq('Hello World')
   end
 
-  it 'signs multiple values' do
+  it 'includes multiple values' do
     exporter = Omnikassa2::CSVSerializer.new([
       { field: :field_one },
       { field: :field_two }

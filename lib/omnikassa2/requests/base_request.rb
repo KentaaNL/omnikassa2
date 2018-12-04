@@ -12,6 +12,10 @@ module Omnikassa2
       nil
     end
 
+    def custom_token
+      nil
+    end
+
     def content_type
       nil
     end
@@ -86,6 +90,8 @@ module Omnikassa2
         value['Authorization'] = "Bearer #{Omnikassa2.refresh_token}"
       when :access_token
         value['Authorization'] = "Bearer #{@access_token}"
+      when :custom_token
+        value['Authorization'] = "Bearer #{custom_token}"
       end
     end
 

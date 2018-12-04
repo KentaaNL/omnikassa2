@@ -39,7 +39,7 @@ module Omnikassa2
     end
 
     def response_decorator
-      Omnikassa2::OrderAnnounceResponse
+      OrderAnnounceResponse
     end
   end
 end

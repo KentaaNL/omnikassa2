@@ -32,17 +32,21 @@ module Omnikassa2
     end
 
     def valid_signature?
-      Notification.signature_provider.validate(self, @signature)
+      SignatureProvider.validate(to_s, @signature)
+    end
+
+    def to_s
+      Notification.csv_serializer.serialize(self)
     end
 
     private
 
-    def self.signature_provider
-      Omnikassa2::SignatureProvider.new([
-        { path: :authentication },
-        { path: :expiry },
-        { path: :event_name },
-        { path: :description }
+    def self.csv_serializer
+      CSVSerializer.new([
+        { field: :authentication },
+        { field: :expiry },
+        { field: :event_name },
+        { field: :description }
       ])
     end
   end

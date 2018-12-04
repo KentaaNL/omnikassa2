@@ -16,20 +16,27 @@ module Omnikassa2
     end
 
     def signature
-      OrderAnnouncement.signature_provider.sign self
+      SignatureProvider.sign to_s
     end
 
-    private
+    def to_s
+      OrderAnnouncement.csv_serializer.serialize(self)
+    end
 
-    def self.signature_provider
-      Omnikassa2::SignatureProvider.new([
-        { path: :timestamp },
-        { path: :merchant_order_id },
-        { path: [:amount, :currency] },
-        { path: [:amount, :amount ] },
-        { path: :language, include_if_empty: true },
-        { path: :description, include_if_empty: true },
-        { path: :merchant_return_url }
+    def self.csv_serializer
+      Omnikassa2::CSVSerializer.new([
+        { field: :timestamp },
+        { field: :merchant_order_id },
+        {
+          field: :amount,
+          nested_fields: [
+            { field: :currency },
+            { field: :amount }
+          ]
+        },
+        { field: :language, include_if_nil: true },
+        { field: :description, include_if_nil: true },
+        { field: :merchant_return_url }
       ])
     end
   end

@@ -26,7 +26,7 @@ Gem::Specification.new do |spec|
   #spec.files         = `git ls-files -z`.split("\x0").reject do |f|
   #  f.match(%r{^(test|spec|features)/})
   #end
-  spec.files = Dir.glob("{lib,test}/**/*") + %w(README.md LICENSE)
+  spec.files = Dir['{app,config,db,lib}/**/*', 'README.md', 'LICENCE']
 
   spec.bindir        = "exe"
   spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }

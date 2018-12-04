@@ -4,6 +4,8 @@ require 'net/http'
 require 'base64'
 
 module Omnikassa2
+  @@configured = false
+
   SETTINGS = :refresh_token, :signing_key, :mode
 
   def self.config(settings)
@@ -13,6 +15,12 @@ module Omnikassa2
 
       class_variable_set '@@' + setting.to_s, value
     end
+
+    @@configured = true
+  end
+
+  def self.configured?
+    @@configured
   end
 
   def self.refresh_token

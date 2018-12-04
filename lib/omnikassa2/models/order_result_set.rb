@@ -30,11 +30,11 @@ module Omnikassa2
             order_status: order['orderStatus'],
             order_status_date_time: Time.parse(order['orderStatusDateTime']),
             error_code: order['errorCode'],
-            paid_amount: MoneyAmount.new(
+            paid_amount: Money.new(
               amount: order['paidAmount']['amount'].to_i,
               currency: order['paidAmount']['currency']
             ),
-            total_amount: MoneyAmount.new(
+            total_amount: Money.new(
               amount: order['totalAmount']['amount'].to_i,
               currency: order['totalAmount']['currency']
             )

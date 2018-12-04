@@ -1,5 +1,5 @@
 module Omnikassa2
-  class OrderAnnouncement
+  class MerchantOrder
     attr_reader :merchant_return_url
     attr_reader :merchant_order_id
     attr_reader :amount
@@ -20,7 +20,7 @@ module Omnikassa2
     end
 
     def to_s
-      OrderAnnouncement.csv_serializer.serialize(self)
+      MerchantOrder.csv_serializer.serialize(self)
     end
 
     private

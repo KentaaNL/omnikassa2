@@ -2,7 +2,7 @@ describe Omnikassa2::StatusPullRequest do
   before(:each) do
     Omnikassa2.config(
       ConfigurationFactory.create(
-        base_url: 'https://www.example.org/sandbox'
+        mode: :sandbox
       )
     )
 
@@ -35,7 +35,7 @@ describe Omnikassa2::StatusPullRequest do
 
     it 'uses correct URL' do
       Omnikassa2::StatusPullRequest.new(notification_token).send
-      assert_requested :any, 'https://www.example.org/sandbox/order/server/api/events/results/merchant.order.status.changed'
+      assert_requested :any, 'https://betalen.rabobank.nl/omnikassa-api-sandbox/order/server/api/events/results/merchant.order.status.changed'
     end
 
     it 'sets header: \'Authorization: Bearer <refresh-token>\'' do
@@ -57,7 +57,7 @@ describe Omnikassa2::StatusPullRequest do
       end
 
       it 'triggers error' do
-        expect { subject.send }.to raise_error(Omnikassa2::StatusPullRequest::ExpiringNotificationError)
+        expect { subject.send }.to raise_error(Omnikassa2::ExpiringNotificationError)
       end
     end
 
@@ -71,7 +71,7 @@ describe Omnikassa2::StatusPullRequest do
       end
 
       it 'triggers error' do
-        expect { subject.send }.to raise_error(Omnikassa2::StatusPullRequest::InvalidSignatureError)
+        expect { subject.send }.to raise_error(Omnikassa2::InvalidSignatureError)
       end
     end
   end

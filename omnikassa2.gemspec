@@ -9,8 +9,8 @@ Gem::Specification.new do |spec|
   spec.email         = ["aikedejongste@gmail.com"]
   spec.license       = "MIT"
 
-  spec.summary       = "Omnikassa2 is a Rails gem for Rabobank's Omnikassa 2.0"
-  spec.description   = "Omnikassa2 is a Rails gem for Rabobank's Omnikassa 2.0"
+  spec.summary       = "Omnikassa2 is a gem for Rabobank's Omnikassa 2.0"
+  spec.description   = "Omnikassa2 is a gem for Rabobank's Omnikassa 2.0"
   spec.homepage      = "https://github.com/AikedeJongste/omnikassa2"
 
 

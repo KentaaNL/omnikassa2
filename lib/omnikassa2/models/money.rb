@@ -1,5 +1,5 @@
 module Omnikassa2
-  class MoneyAmount
+  class Money
     attr_reader :amount
     attr_reader :currency
 

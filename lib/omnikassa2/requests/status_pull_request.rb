@@ -30,19 +30,10 @@ module Omnikassa2
     end
 
     def send
-      raise InvalidSignatureError unless @notification.valid_signature?
-      raise ExpiringNotificationError if @notification.expiring?
+      raise Omnikassa2::InvalidSignatureError unless @notification.valid_signature?
+      raise Omnikassa2::ExpiringNotificationError if @notification.expiring?
 
       super()
-    end
-
-    class StatusPullRequestError < ::Omnikassa2::OmniKassaError
-    end
-
-    class InvalidSignatureError < StatusPullRequestError
-    end
-
-    class ExpiringNotificationError < StatusPullRequestError
     end
   end
 end

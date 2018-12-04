@@ -4,7 +4,7 @@ require 'net/http'
 require 'base64'
 
 module Omnikassa2
-  SETTINGS = :refresh_token, :signing_key, :base_url
+  SETTINGS = :refresh_token, :signing_key, :mode
 
   def self.config(settings)
     for setting in SETTINGS
@@ -24,7 +24,34 @@ module Omnikassa2
   end
 
   def self.base_url
-    @@base_url
+    case @@mode
+    when :production
+      'https://betalen.rabobank.nl/omnikassa-api'
+    when :sandbox
+      'https://betalen.rabobank.nl/omnikassa-api-sandbox'
+    else
+      raise ConfigError, "unknown mode: '#{ @@mode }'"
+    end
+  end
+
+  def self.announce_order(order_announcement)
+    response = OrderAnnounceRequest.new(order_announcement, request_config).send
+    raise Omnikassa2::InvalidSignatureError unless response.valid_signature?
+    response
+  end
+
+  def self.status_pull(notification)
+    more_results_available = true
+    while(more_results_available) do
+      response = StatusPullRequest.new(notification, request_config).send
+      raise Omnikassa2::InvalidSignatureError unless response.valid_signature?
+
+      response.order_results.each do |order_result|
+        yield order_result
+      end
+
+      more_results_available = response.more_order_results_available
+    end
   end
 
   # The common base class for all exceptions raised by OmniKassa
@@ -33,5 +60,19 @@ module Omnikassa2
 
   # Raised if something is wrong with the configuration parameters
   class ConfigError < OmniKassaError
+  end
+
+  class InvalidSignatureError < OmniKassaError
+  end
+
+  class ExpiringNotificationError < OmniKassaError
+  end
+
+  private
+
+  def request_config
+    {
+      access_token: AccessTokenProvider.instance
+    }
   end
 end

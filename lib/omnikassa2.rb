@@ -1,12 +1,7 @@
+require "omnikassa2/version"
 require 'openssl'
 require 'net/http'
 require 'base64'
-
-[
-  "lib/**/*.rb"
-].each do |path|
-  Dir[File.expand_path path].each{|f| require_relative(f)}
-end
 
 module Omnikassa2
   @@configured = false

@@ -14,11 +14,11 @@ module Omnikassa2
     end
 
     def code
-      http_response.code.to_i
+      @http_response.code.to_i
     end
 
     def message
-      http_response.message
+      @http_response.message
     end
 
     def success?

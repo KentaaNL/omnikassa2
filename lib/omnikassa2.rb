@@ -65,7 +65,7 @@ module Omnikassa2
   end
 
   def self.announce_order(order_announcement)
-    response = Omnikassa2::OrderAnnounceRequest.new(order_announcement, Omnikassa2.request_config).send
+    response = Omnikassa2::OrderAnnounceRequest.new(order_announcement).send
     raise Omnikassa2::InvalidSignatureError unless response.valid_signature?
     response
   end
@@ -73,7 +73,7 @@ module Omnikassa2
   def self.status_pull(notification)
     more_results_available = true
     while(more_results_available) do
-      response = Omnikassa2::StatusPullRequest.new(notification, Omnikassa2.request_config).send
+      response = Omnikassa2::StatusPullRequest.new(notification).send
       raise Omnikassa2::InvalidSignatureError unless response.valid_signature?
 
       result_set = response.order_result_set
@@ -97,13 +97,5 @@ module Omnikassa2
   end
 
   class ExpiringNotificationError < OmniKassaError
-  end
-
-  private
-
-  def self.request_config
-    {
-      access_token: AccessTokenProvider.instance
-    }
   end
 end

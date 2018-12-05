@@ -1,7 +1,7 @@
 module Omnikassa2
   class BaseRequest
     def initialize(config = {})
-      @access_token = config.fetch(:access_token, nil)
+      @access_token = config.fetch(:access_token, Omnikassa2::AccessTokenProvider.instance)
     end
 
     def http_method

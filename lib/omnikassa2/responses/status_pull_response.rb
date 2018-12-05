@@ -11,6 +11,10 @@ module Omnikassa2
       OrderResultSet.from_json(json_body)
     end
 
+    def valid_signature?
+      order_result_set.valid_signature?
+    end
+
     private
 
     def self.csv_serializer

@@ -42,37 +42,5 @@ describe Omnikassa2::StatusPullRequest do
       Omnikassa2::StatusPullRequest.new(notification_token).send
       assert_requested :any, //, headers: {'Authorization' => 'Bearer n0tif1cationT0ken'}
     end
-
-    context 'with expiring notification' do
-      before(:each) do
-        Timecop.freeze Time.parse('2016-11-24T17:30:00.000+0000')
-      end
-
-      subject do
-        Omnikassa2::StatusPullRequest.new(
-          NotificationFactory.create(
-            expiry: Time.parse('2016-07-12T17:30:00.000+0000')
-          )
-        )
-      end
-
-      it 'triggers error' do
-        expect { subject.send }.to raise_error(Omnikassa2::ExpiringNotificationError)
-      end
-    end
-
-    context 'with notification without valid signature' do
-      subject do
-        Omnikassa2::StatusPullRequest.new(
-          NotificationFactory.create(
-            signature: 'invalidSignature'
-          )
-        )
-      end
-
-      it 'triggers error' do
-        expect { subject.send }.to raise_error(Omnikassa2::InvalidSignatureError)
-      end
-    end
   end
 end

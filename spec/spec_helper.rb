@@ -2,9 +2,9 @@ require 'webmock/rspec'
 require 'pry'
 require 'time'
 require 'timecop'
+require 'omnikassa2'
 
 [
-  "lib/**/*.rb",
   "spec/factories/**/*.rb"
 ].each do |path|
   Dir[File.expand_path path].each{|f| require_relative(f)}

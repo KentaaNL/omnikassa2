@@ -28,12 +28,5 @@ module Omnikassa2
     def response_decorator
       StatusPullResponse
     end
-
-    def send
-      raise Omnikassa2::InvalidSignatureError unless @notification.valid_signature?
-      raise Omnikassa2::ExpiringNotificationError if @notification.expiring?
-
-      super()
-    end
   end
 end

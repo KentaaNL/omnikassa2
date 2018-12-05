@@ -3,9 +3,8 @@ require 'time'
 
 module Omnikassa2
   class OrderAnnounceRequest < BaseRequest
-    def initialize(order_announcement, config)
+    def initialize(order_announcement, config = {})
       super(config)
-
       @order_announcement = order_announcement
     end
 

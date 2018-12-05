@@ -28,7 +28,7 @@ require 'omnikassa2/responses/status_pull_response'
 module Omnikassa2
   @@configured = false
 
-  SETTINGS = :refresh_token, :signing_key, :mode
+  SETTINGS = :refresh_token, :signing_key, :base_url
 
   def self.config(settings)
     for setting in SETTINGS
@@ -54,13 +54,13 @@ module Omnikassa2
   end
 
   def self.base_url
-    case @@mode
+    case @@base_url
     when :production
       'https://betalen.rabobank.nl/omnikassa-api'
     when :sandbox
       'https://betalen.rabobank.nl/omnikassa-api-sandbox'
     else
-      raise ConfigError, "unknown mode: '#{ @@mode }'"
+      @@base_url
     end
   end
 

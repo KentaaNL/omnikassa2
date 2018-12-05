@@ -6,11 +6,11 @@ describe Omnikassa2::OrderAnnounceRequest do
     Omnikassa2.config(
       ConfigurationFactory.create(
         signing_key: 'bXlTMWduaW5nSzN5', # Base64.encode64('myS1gningK3y')
-        mode: :sandbox
+        base_url: 'https://www.example.org/sandbox'
       )
     )
 
-    WebMock.stub_request(:post, "https://betalen.rabobank.nl/omnikassa-api-sandbox/order/server/api/order")
+    WebMock.stub_request(:post, "https://www.example.org/sandbox/order/server/api/order")
       .to_return(
         body: {
           signature: 's1gnaTuRe',
@@ -50,7 +50,7 @@ describe Omnikassa2::OrderAnnounceRequest do
 
     it 'uses correct URL' do
       order_announce_request.send
-      assert_requested :any, 'https://betalen.rabobank.nl/omnikassa-api-sandbox/order/server/api/order'
+      assert_requested :any, 'https://www.example.org/sandbox/order/server/api/order'
     end
 
     it 'sets header: \'Content-Type: application/json\'' do

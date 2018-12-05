@@ -23,13 +23,13 @@ Or install it yourself as:
 
 
 ## Configuration
-You can find your `refresh_token` and `signing_key` in Omnikassa's dashboard. The `mode` must either be `:sandbox` or `:production` (see offical documentation).
+You can find your `refresh_token` and `signing_key` in Omnikassa's dashboard. The `base_url` corresponds with the base_url of the Omnikassa2 API. You can use `:sandbox` or `:production` as well.
 
 ```ruby
 Omnikassa2.config(
   refresh_token: 'my_refresh_token',
   signing_key: 'my_signing_key',
-  mode: :sandbox
+  base_url: :sandbox # Shortcut for 'https://betalen.rabobank.nl/omnikassa-api-sandbox'
 )
 ```
 

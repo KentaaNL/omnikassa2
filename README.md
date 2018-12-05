@@ -98,11 +98,5 @@ class MyOmnikassaWebhookController
 end
 ```
 
-## Development
-
-Feel free to contact us if you need help implementing this Gem in your
-application. Also let us know if you need additional features.
-
 ## Contributing
-
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/omnikassa2.
+Bug reports, suggestions, questions and pull requests are welcome on GitHub at https://github.com/kabisa/omnikassa2.

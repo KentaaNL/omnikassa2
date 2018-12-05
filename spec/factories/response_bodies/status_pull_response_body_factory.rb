@@ -7,7 +7,7 @@ class StatusPullResponseBodyFactory
     }
 
     if(body.fetch(:signature) == :valid_signature)
-      valid_signature = Omnikassa2::SignatureProvider.sign(
+      valid_signature = Omnikassa2::SignatureService.sign(
         Omnikassa2::OrderResultSet.from_json(JSON.generate(body)).to_s
       )
       body[:signature] = valid_signature

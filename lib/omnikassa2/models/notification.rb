@@ -32,7 +32,7 @@ module Omnikassa2
     end
 
     def valid_signature?
-      SignatureProvider.validate(to_s, @signature)
+      SignatureService.validate(to_s, @signature)
     end
 
     def to_s

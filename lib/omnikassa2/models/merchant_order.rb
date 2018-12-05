@@ -16,7 +16,7 @@ module Omnikassa2
     end
 
     def signature
-      SignatureProvider.sign to_s
+      SignatureService.sign to_s
     end
 
     def to_s

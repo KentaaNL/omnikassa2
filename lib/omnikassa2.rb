@@ -6,7 +6,7 @@ require 'omnikassa2/version'
 
 require 'omnikassa2/helpers/access_token_provider'
 require 'omnikassa2/helpers/csv_serializer'
-require 'omnikassa2/helpers/signature_provider'
+require 'omnikassa2/helpers/signature_service'
 
 require 'omnikassa2/models/access_token'
 require 'omnikassa2/models/merchant_order'

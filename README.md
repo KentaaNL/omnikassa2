@@ -53,6 +53,31 @@ redirect_url = response.redirect_url
 # Send client to 'redirect_url'
 ```
 
+Omnikassa will now allow the user to pay. When the payment is finished or terminated, the user will be redirected to the given `merchant_return_url`. These query parameters are `order_id`, `status` and `signature`. We must validate the signature in order to trust the provided parameters:
+
+```ruby
+# pseudocode
+class MyLandingPageController
+  def get(request)
+    params = request.params
+
+    # Validate passed parameters
+    valid_params = Omnikassa2::SignatureService.validate(
+      params[:order_id] + ',' + params[:status],
+      params[:signature]
+    )
+
+    if valid_params
+      # Params are trusted
+      render 'landing_page', order_status: params[:order_status]
+    else
+      # Params are not trusted
+      render 'error_page'
+    end
+  end
+end
+```
+
 ## Status pull
 Performing a status pull is only possible when notified by Omnikassa through a configured webhook in the dashboard.
 

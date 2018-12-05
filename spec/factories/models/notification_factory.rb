@@ -9,7 +9,7 @@ class NotificationFactory
     }
 
     if(create_params.fetch(:signature) == :valid_signature)
-      create_params[:signature] = Omnikassa2::SignatureProvider.sign(
+      create_params[:signature] = Omnikassa2::SignatureService.sign(
         Omnikassa2::Notification.new(create_params).to_s
       )
     end

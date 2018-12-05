@@ -1,5 +1,5 @@
 module Omnikassa2
-  class SignatureProvider
+  class SignatureService
     def self.sign(string)
       OpenSSL::HMAC.hexdigest(
         OpenSSL::Digest.new('sha512'),

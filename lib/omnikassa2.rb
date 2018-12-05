@@ -101,7 +101,7 @@ module Omnikassa2
 
   private
 
-  def request_config
+  def self.request_config
     {
       access_token: AccessTokenProvider.instance
     }

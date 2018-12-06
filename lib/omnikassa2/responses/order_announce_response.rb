@@ -11,7 +11,7 @@ module Omnikassa2
     end
 
     def valid_signature?
-      string = Notification.csv_serializer.serialize(self)
+      string = OrderAnnounceResponse.csv_serializer.serialize(self)
       SignatureService.validate(string, @signature)
     end
 

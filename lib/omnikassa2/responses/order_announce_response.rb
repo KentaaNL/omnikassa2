@@ -14,10 +14,6 @@ module Omnikassa2
       SignatureService.validate(to_s, @signature)
     end
 
-    def to_s
-      Notification.csv_serializer.serialize(self)
-    end
-
     private
 
     def self.csv_serializer

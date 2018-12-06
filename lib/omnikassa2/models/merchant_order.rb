@@ -4,10 +4,16 @@ module Omnikassa2
     attr_reader :merchant_order_id
     attr_reader :amount
 
+    attr_reader :payment_brand
+    attr_reader :payment_brand_force
+
     def initialize(params)
       @merchant_return_url = params.fetch(:merchant_return_url)
       @merchant_order_id = params.fetch(:merchant_order_id)
       @amount = params.fetch(:amount)
+
+      @payment_brand = params.fetch(:payment_brand, nil)
+      @payment_brand_force = params.fetch(:payment_brand_force, nil)
     end
 
     def timestamp
@@ -38,7 +44,9 @@ module Omnikassa2
         },
         { field: :language, include_if_nil: true },
         { field: :description, include_if_nil: true },
-        { field: :merchant_return_url }
+        { field: :merchant_return_url },
+        { field: :payment_brand },
+        { field: :payment_brand_force }
       ])
     end
   end

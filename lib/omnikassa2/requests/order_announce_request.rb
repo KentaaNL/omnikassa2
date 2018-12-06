@@ -3,9 +3,9 @@ require 'time'
 
 module Omnikassa2
   class OrderAnnounceRequest < BaseRequest
-    def initialize(order_announcement, config = {})
+    def initialize(merchant_order, config = {})
       super(config)
-      @order_announcement = order_announcement
+      @merchant_order = merchant_order
     end
 
     def http_method
@@ -25,16 +25,21 @@ module Omnikassa2
     end
 
     def body
-      {
-        'timestamp' => @order_announcement.timestamp,
-        'merchantOrderId' => @order_announcement.merchant_order_id,
+      result = {
+        'timestamp' => @merchant_order.timestamp,
+        'merchantOrderId' => @merchant_order.merchant_order_id,
         'amount' => {
-          'amount' => @order_announcement.amount.amount.to_s,
-          'currency' => @order_announcement.amount.currency
+          'amount' => @merchant_order.amount.amount.to_s,
+          'currency' => @merchant_order.amount.currency
         },
-        'merchantReturnURL' => @order_announcement.merchant_return_url,
-        'signature' => @order_announcement.signature
+        'merchantReturnURL' => @merchant_order.merchant_return_url,
+        'signature' => @merchant_order.signature
       }
+
+      result['paymentBrand'] = @merchant_order.payment_brand unless @merchant_order.payment_brand.nil?
+      result['paymentBrandForce'] = @merchant_order.payment_brand_force unless @merchant_order.payment_brand_force.nil?
+
+      result
     end
 
     def response_decorator

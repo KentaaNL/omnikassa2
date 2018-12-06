@@ -19,20 +19,42 @@ describe Omnikassa2::OrderAnnounceRequest do
       )
   end
 
-  let(:order_announcement) do
-    MerchantOrderFactory.create(
+  let(:base_params) do
+    {
       merchant_order_id: 'order123',
       amount: Omnikassa2::Money.new(
         amount: 4999,
         currency: 'EUR'
       ),
       merchant_return_url: 'http://www.example.org'
+    }
+  end
+
+  let(:minimal_merchant_order) do
+    MerchantOrderFactory.create(
+      base_params
+    )
+  end
+
+  let(:merchant_order) do
+    MerchantOrderFactory.create(
+      base_params.merge(
+        payment_brand: 'IDEAL',
+        payment_brand_force: 'FORCE_ALWAYS'
+      )
+    )
+  end
+
+  let(:minimal_order_announce_request) do
+    Omnikassa2::OrderAnnounceRequest.new(
+      minimal_merchant_order,
+      access_token: 'myAcCEssT0k3n'
     )
   end
 
   let(:order_announce_request) do
     Omnikassa2::OrderAnnounceRequest.new(
-      order_announcement,
+      merchant_order,
       access_token: 'myAcCEssT0k3n'
     )
   end
@@ -105,9 +127,25 @@ describe Omnikassa2::OrderAnnounceRequest do
         end
       end
 
+      it 'has paymentBrand' do
+        order_announce_request.send
+
+        assert_requested(:any, //) do |request|
+          JSON.parse(request.body)['paymentBrand'] == 'IDEAL'
+        end
+      end
+
+      it 'has paymentBrandForce' do
+        order_announce_request.send
+
+        assert_requested(:any, //) do |request|
+          JSON.parse(request.body)['paymentBrandForce'] == 'FORCE_ALWAYS'
+        end
+      end
+
       it 'has a signature' do
         Timecop.freeze Time.parse('2017-02-06T08:32:51.759+01:00')
-        order_announce_request.send
+        minimal_order_announce_request.send
 
         assert_requested(:any, //) do |request|
           HASH = '020f1b1b394a4b433a20499facc9660679154cf96b998e6a4769fbb2b04e3ecd60a8300fdf89c0d6c78aac14c3bc069444cd42e58a852f0c4a4764b8646c9fb7'

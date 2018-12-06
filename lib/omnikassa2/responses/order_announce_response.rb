@@ -11,7 +11,8 @@ module Omnikassa2
     end
 
     def valid_signature?
-      SignatureService.validate(to_s, @signature)
+      string = Notification.csv_serializer.serialize(self)
+      SignatureService.validate(string, @signature)
     end
 
     private

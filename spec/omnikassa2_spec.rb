@@ -1,8 +1,4 @@
 describe Omnikassa2 do
-  it 'works' do
-    expect(123).to eql(123)
-  end
-
   describe 'status pull' do
     before(:each) do
       Timecop.freeze Time.parse('2016-11-24T17:30:00.000+0000')

@@ -85,7 +85,7 @@ module Omnikassa2
       raise Omnikassa2::InvalidSignatureError unless response.valid_signature?
 
       result_set = response.order_result_set
-      response.result_set.order_results.each do |order_result|
+      result_set.order_results.each do |order_result|
         yield order_result
       end
 

@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    omnikassa2 (0.1.20)
+    omnikassa2 (1.0.0)
 
 GEM
   remote: https://rubygems.org/

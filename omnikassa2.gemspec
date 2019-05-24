@@ -5,13 +5,13 @@ require "omnikassa2/version"
 Gem::Specification.new do |spec|
   spec.name          = "omnikassa2"
   spec.version       = Omnikassa2::VERSION
-  spec.authors       = ["Aike de Jongste", "Arnout de Mooij"]
-  spec.email         = ["aikedejongste@gmail.com"]
+  spec.authors       = ["Aike de Jongste", "Arnout de Mooij", "Luc Zwanenberg"]
+  spec.email         = ["luc.zwanenberg@kabisa.nl"]
   spec.license       = "MIT"
 
   spec.summary       = "Omnikassa2 is a gem for Rabobank's Omnikassa 2.0"
   spec.description   = "Omnikassa2 is a gem for Rabobank's Omnikassa 2.0"
-  spec.homepage      = "https://github.com/AikedeJongste/omnikassa2"
+  spec.homepage      = "https://github.com/kabisa/omnikassa2"
 
 
   # Prevent pushing this gem to RubyGems.org. To allow pushes either set the 'allowed_push_host'

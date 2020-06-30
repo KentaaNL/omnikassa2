@@ -98,5 +98,7 @@ class MyOmnikassaWebhookController
 end
 ```
 
-## Contributing
-Bug reports, suggestions, questions and pull requests are welcome on GitHub at https://github.com/kabisa/omnikassa2.
+## Project Status / Contributing
+This omnikassa2 gem is actively used within other Kabisa projects but has no regular expected maintenance or releases of itself. We intent to keep this gem functional and strive for high quality, but effort is dependent on related projects.
+
+Bug reports, suggestions, questions and pull requests are all welcome on GitHub at https://github.com/kabisa/omnikassa2, but we can't make any promises on a follow-up.

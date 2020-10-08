@@ -26,13 +26,14 @@ module Omnikassa2
 
     def body
       result = {
-        'timestamp' => @merchant_order.timestamp,
-        'merchantOrderId' => @merchant_order.merchant_order_id,
         'amount' => {
           'amount' => @merchant_order.amount.amount.to_s,
           'currency' => @merchant_order.amount.currency
         },
+        'merchantOrderId' => @merchant_order.merchant_order_id,
         'merchantReturnURL' => @merchant_order.merchant_return_url,
+        'language' => 'EN',
+        'timestamp' => @merchant_order.timestamp,
         'signature' => @merchant_order.signature
       }
 

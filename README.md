@@ -40,7 +40,7 @@ For [Status Pull](#status-pull), it is required to configure a webhook as well (
 response = Omnikassa2.announce_order(
   Omnikassa2::MerchantOrder.new(
     merchant_order_id: 'order123',
-    amount: Money.new(
+    amount: Omnikassa2::Money.new(
       amount: 4999,
       currency: 'EUR'
     ),

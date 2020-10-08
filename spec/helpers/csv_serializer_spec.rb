@@ -11,7 +11,7 @@ describe Omnikassa2::CSVSerializer do
     expect(csv_string).to eq('Hello World')
   end
 
-  it 'ingores unconfigured fields' do
+  it 'ignores unconfigured fields' do
     exporter = Omnikassa2::CSVSerializer.new([
       { field: :field_one }
     ])

@@ -1,8 +1,10 @@
+# frozen_string_literal: true
+
 module Omnikassa2
   class AccessTokenProvider
-    def self.instance
-      @@instance ||= AccessTokenProvider.new
-      @@instance
+    def initialize(config)
+      @config = config
+      @access_token = nil
     end
 
     def access_token
@@ -16,16 +18,12 @@ module Omnikassa2
 
     private
 
-    def initialize
-      @access_token = nil
-    end
-
     def token_needs_refresh?
       @access_token.nil? || @access_token.expiring?
     end
 
     def refresh_token
-      response = Omnikassa2::RefreshRequest.new.send
+      response = Omnikassa2::RefreshRequest.new(@config).send_request
       raise Omnikassa2::HttpError, response.to_s unless response.success?
 
       @access_token = response.access_token

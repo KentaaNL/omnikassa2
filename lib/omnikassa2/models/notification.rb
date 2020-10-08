@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Omnikassa2
   class Notification
     EXPIRATION_MARGIN_SECONDS = 30
@@ -17,22 +19,24 @@ module Omnikassa2
     end
 
     def self.from_json(json)
-      hash = JSON.parse(json)
-      Notification.new(
-        authentication: hash['authentication'],
-        expiry: Time.parse(hash['expiry']),
-        event_name: hash['eventName'],
-        poi_id: hash['poiId'],
-        signature: hash['signature']
-      )
+      hash = JSON.parse(json, symbolize_names: true)
+      params = {
+        authentication: hash[:authentication],
+        expiry: Time.parse(hash[:expiry]),
+        event_name: hash[:eventName],
+        poi_id: hash[:poiId],
+        signature: hash[:signature],
+      }
+
+      Notification.new(params)
     end
 
     def expiring?
       (Time.now + EXPIRATION_MARGIN_SECONDS) - @expiry > 0
     end
 
-    def valid_signature?
-      SignatureService.validate(to_s, @signature)
+    def valid_signature?(signing_key)
+      SignatureService.validate(to_s, @signature, signing_key)
     end
 
     def to_s

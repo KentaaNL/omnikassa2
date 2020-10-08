@@ -1,25 +1,27 @@
+# frozen_string_literal: true
+
 require 'omnikassa2/responses/base_response'
 
 module Omnikassa2
   class OrderAnnounceResponse < BaseResponse
-    def signature
-      body['signature']
+    def omnikassa_order_id
+      body[:omnikassaOrderId]
     end
 
     def redirect_url
-      body['redirectUrl']
+      body[:redirectUrl]
     end
 
-    def valid_signature?
-      string = OrderAnnounceResponse.csv_serializer.serialize(self)
-      SignatureService.validate(string, signature)
+    def to_s
+      OrderAnnounceResponse.csv_serializer.serialize(self)
     end
 
     private
 
     def self.csv_serializer
       CSVSerializer.new([
-        { field: :redirect_url }
+        { field: :redirect_url },
+        { field: :omnikassa_order_id }
       ])
     end
   end

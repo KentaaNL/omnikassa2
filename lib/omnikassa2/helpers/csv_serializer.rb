@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Omnikassa2
   class CSVSerializer
     def initialize(config)
@@ -5,10 +7,10 @@ module Omnikassa2
     end
 
     def serialize(object)
-      objects = object.kind_of?(Array) ? object : [object]
+      objects = object.is_a?(Array) ? object : [object]
       parts = []
-      objects.each do |object|
-        parts << extract_fields(object).join(',')
+      objects.each do |item|
+        parts << extract_fields(item).join(',')
       end
       parts.join(',')
     end
@@ -30,9 +32,7 @@ module Omnikassa2
       nested_fields = config_hash.fetch(:nested_fields, nil)
 
       value = extract_value object, field
-      if(value.kind_of?(Time))
-        value = value.iso8601(3)
-      end
+      value = value.iso8601(3) if value.is_a?(Time)
 
       if value.nil?
         include_if_nil ? '' : nil
@@ -44,7 +44,7 @@ module Omnikassa2
     end
 
     def extract_value(object, field)
-      if(object.kind_of?(Hash))
+      if object.is_a?(Hash)
         object.fetch(field, nil)
       else
         object.respond_to?(field) ? object.public_send(field) : nil

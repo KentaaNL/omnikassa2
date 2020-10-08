@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Omnikassa2
   class OrderResultSet
     attr_reader :more_order_results_available
@@ -10,8 +12,8 @@ module Omnikassa2
       @signature = params.fetch(:signature)
     end
 
-    def valid_signature?
-      SignatureService.validate(to_s, @signature)
+    def valid_signature?(signing_key)
+      SignatureService.validate(to_s, @signature, signing_key)
     end
 
     def to_s
@@ -19,29 +21,31 @@ module Omnikassa2
     end
 
     def self.from_json(json)
-      hash = JSON.parse(json)
-      OrderResultSet.new(
-        more_order_results_available: hash['moreOrderResultsAvailable'],
-        order_results: hash['orderResults'].map do |order|
+      hash = JSON.parse(json, symbolize_names: true)
+      params = {
+        more_order_results_available: hash[:moreOrderResultsAvailable],
+        order_results: hash[:orderResults].map do |order|
           OrderResult.new(
-            merchant_order_id: order['merchantOrderId'],
-            omnikassa_order_id: order['omnikassaOrderId'],
-            poi_id: order['poiId'],
-            order_status: order['orderStatus'],
-            order_status_date_time: Time.parse(order['orderStatusDateTime']),
-            error_code: order['errorCode'],
+            merchant_order_id: order[:merchantOrderId],
+            omnikassa_order_id: order[:omnikassaOrderId],
+            poi_id: order[:poiId],
+            order_status: order[:orderStatus],
+            order_status_date_time: Time.parse(order[:orderStatusDateTime]),
+            error_code: order[:errorCode],
             paid_amount: Money.new(
-              amount: order['paidAmount']['amount'].to_i,
-              currency: order['paidAmount']['currency']
+              amount: order[:paidAmount][:amount].to_i,
+              currency: order[:paidAmount][:currency]
             ),
             total_amount: Money.new(
-              amount: order['totalAmount']['amount'].to_i,
-              currency: order['totalAmount']['currency']
+              amount: order[:totalAmount][:amount].to_i,
+              currency: order[:totalAmount][:currency]
             )
           )
         end,
-        signature: hash['signature']
-      )
+        signature: hash[:signature]
+      }
+
+      OrderResultSet.new(params)
     end
 
     private

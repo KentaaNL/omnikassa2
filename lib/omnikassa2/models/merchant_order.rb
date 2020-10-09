@@ -24,6 +24,32 @@ module Omnikassa2
 
     def timestamp
       @timestamp ||= Time.now.iso8601(3)
+      @timestamp
+    end
+
+    def to_s
+      MerchantOrder.csv_serializer.serialize(self)
+    end
+
+    private
+
+    def self.csv_serializer
+      Omnikassa2::CSVSerializer.new([
+        { field: :timestamp },
+        { field: :merchant_order_id },
+        {
+          field: :amount,
+          nested_fields: [
+            { field: :currency },
+            { field: :amount }
+          ]
+        },
+        { field: :language, include_if_nil: true },
+        { field: :description, include_if_nil: true },
+        { field: :merchant_return_url },
+        { field: :payment_brand },
+        { field: :payment_brand_force }
+      ])
     end
   end
 end

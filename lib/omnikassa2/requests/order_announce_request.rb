@@ -21,7 +21,7 @@ module Omnikassa2
     end
 
     def path
-      '/order/server/api/order'
+      '/order/server/api/v2/order'
     end
 
     def body
@@ -32,11 +32,11 @@ module Omnikassa2
         },
         'merchantOrderId' => @merchant_order.merchant_order_id,
         'merchantReturnURL' => @merchant_order.merchant_return_url,
-        'language' => 'EN',
-        'timestamp' => @merchant_order.timestamp,
-        'signature' => @merchant_order.signature
+        'timestamp' => @merchant_order.timestamp
       }
 
+      result['language'] = @merchant_order.language unless @merchant_order.language.nil?
+      result['description'] = @merchant_order.description unless @merchant_order.description.nil?
       result['paymentBrand'] = @merchant_order.payment_brand unless @merchant_order.payment_brand.nil?
       result['paymentBrandForce'] = @merchant_order.payment_brand_force unless @merchant_order.payment_brand_force.nil?
 

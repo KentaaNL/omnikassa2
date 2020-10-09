@@ -68,7 +68,6 @@ module Omnikassa2
     response = Omnikassa2::OrderAnnounceRequest.new(order_announcement).send
 
     raise Omnikassa2::HttpError, response.to_s unless response.success?
-    raise Omnikassa2::InvalidSignatureError unless response.valid_signature?
 
     response
   end

@@ -37,7 +37,7 @@ For [Status Pull](#status-pull), it is required to configure a webhook as well (
 
 ## Announce order
 ```ruby
-response = Omnikassa2.client.announce_order(
+response = Omnikassa2::client.announce_order(
   Omnikassa2::MerchantOrder.new(
     merchant_order_id: 'order123',
     amount: Omnikassa2::Money.new(

@@ -32,7 +32,7 @@ module Omnikassa2
       Omnikassa2::BaseResponse
     end
 
-    def send
+    def send_request
       request = request_class.new(uri, headers)
       request.body = body_raw
 

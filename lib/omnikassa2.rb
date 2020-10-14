@@ -65,7 +65,7 @@ module Omnikassa2
   end
 
   def self.announce_order(order_announcement)
-    response = Omnikassa2::OrderAnnounceRequest.new(order_announcement).send
+    response = Omnikassa2::OrderAnnounceRequest.new(order_announcement, self).send_request
 
     raise Omnikassa2::HttpError, response.to_s unless response.success?
 
@@ -78,7 +78,7 @@ module Omnikassa2
       raise Omnikassa2::InvalidSignatureError unless notification.valid_signature?
       raise Omnikassa2::ExpiringNotificationError if notification.expiring?
 
-      response = Omnikassa2::StatusPullRequest.new(notification).send
+      response = Omnikassa2::StatusPullRequest.new(notification).send_request
 
       raise Omnikassa2::HttpError, response.to_s unless response.success?
       raise Omnikassa2::InvalidSignatureError unless response.valid_signature?

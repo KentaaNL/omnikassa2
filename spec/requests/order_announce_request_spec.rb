@@ -61,34 +61,34 @@ describe Omnikassa2::OrderAnnounceRequest do
 
   context 'when sent' do
     it 'only invokes one requests' do
-      order_announce_request.send
+      order_announce_request.send_request
       assert_requested :any, //, times: 1
     end
 
     it 'uses correct HTTP method' do
-      order_announce_request.send
+      order_announce_request.send_request
       assert_requested :post, //
     end
 
     it 'uses correct URL' do
-      order_announce_request.send
+      order_announce_request.send_request
       assert_requested :any, 'https://www.example.org/sandbox/order/server/api/order'
     end
 
     it 'sets header: \'Content-Type: application/json\'' do
-      order_announce_request.send
+      order_announce_request.send_request
       assert_requested :any, //, headers: {'Content-Type' => 'application/json'}
     end
 
     it 'sets header: \'Authorization: Bearer <access-token>\'' do
-      order_announce_request.send
+      order_announce_request.send_request
       assert_requested :any, //, headers: {'Authorization' => 'Bearer myAcCEssT0k3n'}
     end
 
     describe 'request body' do
       it 'has timestamp' do
         Timecop.freeze Time.parse('2017-02-06T08:32:51.759+01:00')
-        order_announce_request.send
+        order_announce_request.send_request
 
         assert_requested(:any, //) do |request|
           JSON.parse(request.body)['timestamp'] == '2017-02-06T08:32:51.759+01:00'
@@ -96,7 +96,7 @@ describe Omnikassa2::OrderAnnounceRequest do
       end
 
       it 'has merchantOrderId' do
-        order_announce_request.send
+        order_announce_request.send_request
 
         assert_requested(:any, //) do |request|
           JSON.parse(request.body)['merchantOrderId'] == 'order123'
@@ -104,7 +104,7 @@ describe Omnikassa2::OrderAnnounceRequest do
       end
 
       it 'has amount.amount' do
-        order_announce_request.send
+        order_announce_request.send_request
 
         assert_requested(:any, //) do |request|
           JSON.parse(request.body)['amount']['amount'] == '4999'
@@ -112,7 +112,7 @@ describe Omnikassa2::OrderAnnounceRequest do
       end
 
       it 'has amount.currency' do
-        order_announce_request.send
+        order_announce_request.send_request
 
         assert_requested(:any, //) do |request|
           JSON.parse(request.body)['amount']['currency'] == 'EUR'
@@ -120,7 +120,7 @@ describe Omnikassa2::OrderAnnounceRequest do
       end
 
       it 'has merchantReturnURL' do
-        order_announce_request.send
+        order_announce_request.send_request
 
         assert_requested(:any, //) do |request|
           JSON.parse(request.body)['merchantReturnURL'] == 'http://www.example.org'
@@ -128,7 +128,7 @@ describe Omnikassa2::OrderAnnounceRequest do
       end
 
       it 'has paymentBrand' do
-        order_announce_request.send
+        order_announce_request.send_request
 
         assert_requested(:any, //) do |request|
           JSON.parse(request.body)['paymentBrand'] == 'IDEAL'
@@ -136,7 +136,7 @@ describe Omnikassa2::OrderAnnounceRequest do
       end
 
       it 'has paymentBrandForce' do
-        order_announce_request.send
+        order_announce_request.send_request
 
         assert_requested(:any, //) do |request|
           JSON.parse(request.body)['paymentBrandForce'] == 'FORCE_ALWAYS'
@@ -145,7 +145,7 @@ describe Omnikassa2::OrderAnnounceRequest do
 
       it 'has a signature' do
         Timecop.freeze Time.parse('2017-02-06T08:32:51.759+01:00')
-        minimal_order_announce_request.send
+        minimal_order_announce_request.send_request
 
         assert_requested(:any, //) do |request|
           HASH = '020f1b1b394a4b433a20499facc9660679154cf96b998e6a4769fbb2b04e3ecd60a8300fdf89c0d6c78aac14c3bc069444cd42e58a852f0c4a4764b8646c9fb7'

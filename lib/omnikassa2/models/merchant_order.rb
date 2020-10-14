@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Omnikassa2
   class MerchantOrder
     attr_reader :merchant_return_url

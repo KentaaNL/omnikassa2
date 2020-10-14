@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Omnikassa2
   class BaseRequest
     def initialize(config = {})
@@ -80,14 +82,14 @@ module Omnikassa2
     end
 
     def uri
-      tmp_url = Omnikassa2::client.base_url + path
+      tmp_url = Omnikassa2.instance.base_url + path
       URI(tmp_url)
     end
 
     def add_authorization_header(value)
       case authorization_method
       when :refresh_token
-        value['Authorization'] = "Bearer #{Omnikassa2::client.refresh_token}"
+        value['Authorization'] = "Bearer #{Omnikassa2.instance.refresh_token}"
       when :access_token
         value['Authorization'] = "Bearer #{@access_token}"
       when :custom_token

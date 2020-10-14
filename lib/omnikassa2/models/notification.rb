@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Omnikassa2
   class Notification
     EXPIRATION_MARGIN_SECONDS = 30

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 describe Omnikassa2 do
   describe 'status pull' do
     before(:each) do
@@ -13,7 +15,7 @@ describe Omnikassa2 do
 
       it 'triggers error' do
         expect do
-          Omnikassa2::client.status_pull(expiring_notification)
+          Omnikassa2.instance.status_pull(expiring_notification)
         end.to raise_error(Omnikassa2::ExpiringNotificationError)
       end
     end
@@ -27,7 +29,7 @@ describe Omnikassa2 do
 
       it 'triggers error' do
         expect do
-          Omnikassa2::client.status_pull(notification_with_invalid_signature)
+          Omnikassa2.instance.status_pull(notification_with_invalid_signature)
         end.to raise_error(Omnikassa2::InvalidSignatureError)
       end
     end

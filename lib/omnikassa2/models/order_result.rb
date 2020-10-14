@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Omnikassa2
   class OrderResult
     attr_reader :merchant_order_id

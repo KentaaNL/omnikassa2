@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'json'
 require 'omnikassa2/models/access_token'
 require 'timecop'
@@ -13,7 +15,7 @@ describe Omnikassa2::AccessToken do
   end
 
   context 'when creating from JSON' do
-    subject {
+    subject do
       Omnikassa2::AccessToken.from_json(
         JSON.generate(
           token: base_params[:token],
@@ -21,7 +23,7 @@ describe Omnikassa2::AccessToken do
           durationInMillis: base_params[:duration_in_millis]
         )
       )
-    }
+    end
 
     it 'stores token as string' do
       expect(subject.token).to eq('SoMeT0KeN')
@@ -44,13 +46,13 @@ describe Omnikassa2::AccessToken do
     end
 
     context 'when valid_until is at least 5 minutes from now' do
-      subject {
+      subject do
         Omnikassa2::AccessToken.new(
           base_params.merge(
             valid_until: Time.parse('2016-11-24T17:45:00.000+0000')
           )
         )
-      }
+      end
 
       it 'returns false' do
         expect(subject.expiring?).to eq(false)
@@ -58,13 +60,13 @@ describe Omnikassa2::AccessToken do
     end
 
     context 'when valid_until is less than 5 minutes from now' do
-      subject {
+      subject do
         Omnikassa2::AccessToken.new(
           base_params.merge(
             valid_until: Time.parse('2016-11-24T17:31:00.000+0000')
           )
         )
-      }
+      end
 
       it 'returns true' do
         expect(subject.expiring?).to eq(true)
@@ -72,13 +74,13 @@ describe Omnikassa2::AccessToken do
     end
 
     context 'when valid_until is in the past' do
-      subject {
+      subject do
         Omnikassa2::AccessToken.new(
           base_params.merge(
             valid_until: Time.parse('2016-11-24T17:25:00.000+0000')
           )
         )
-      }
+      end
 
       it 'returns true' do
         expect(subject.expiring?).to eq(true)

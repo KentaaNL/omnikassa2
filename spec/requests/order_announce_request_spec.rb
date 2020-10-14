@@ -1,22 +1,24 @@
+# frozen_string_literal: true
+
 require 'omnikassa2/requests/order_announce_request'
 require 'time'
 
 describe Omnikassa2::OrderAnnounceRequest do
   before(:each) do
-    Omnikassa2::client.config(
+    Omnikassa2.instance.config(
       ConfigurationFactory.create(
         signing_key: 'bXlTMWduaW5nSzN5', # Base64.encode64('myS1gningK3y')
         base_url: 'https://www.example.org/sandbox'
       )
     )
 
-    WebMock.stub_request(:post, "https://www.example.org/sandbox/order/server/api/v2/order")
-      .to_return(
-        body: {
-          signature: 's1gnaTuRe',
-          redirectUrl:  "https://www.example.org/pay?token=S0meT0ken&?lang=nl"
-        }.to_json
-      )
+    WebMock.stub_request(:post, 'https://www.example.org/sandbox/order/server/api/v2/order')
+           .to_return(
+             body: {
+               signature: 's1gnaTuRe',
+               redirectUrl:  'https://www.example.org/pay?token=S0meT0ken&?lang=nl'
+             }.to_json
+           )
   end
 
   let(:base_params) do
@@ -77,12 +79,12 @@ describe Omnikassa2::OrderAnnounceRequest do
 
     it 'sets header: \'Content-Type: application/json\'' do
       order_announce_request.send_request
-      assert_requested :any, //, headers: {'Content-Type' => 'application/json'}
+      assert_requested :any, //, headers: { 'Content-Type' => 'application/json' }
     end
 
     it 'sets header: \'Authorization: Bearer <access-token>\'' do
       order_announce_request.send_request
-      assert_requested :any, //, headers: {'Authorization' => 'Bearer myAcCEssT0k3n'}
+      assert_requested :any, //, headers: { 'Authorization' => 'Bearer myAcCEssT0k3n' }
     end
 
     describe 'request body' do

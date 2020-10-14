@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'openssl'
 require 'net/http'
 require 'base64'
@@ -30,10 +32,12 @@ module Omnikassa2
   class Client
     include Singleton
 
-    SETTINGS = :refresh_token, :signing_key, :base_url
+    attr_reader :refresh_token
+
+    SETTINGS = %i[refresh_token signing_key base_url].freeze
 
     def config(settings)
-      for setting in SETTINGS
+      SETTINGS.each do |setting|
         value = settings[setting.to_sym]
         raise ConfigError, "config setting '#{setting}' missing" if value.nil?
 
@@ -44,11 +48,7 @@ module Omnikassa2
     end
 
     def configured?
-      @configured == true
-    end
-
-    def refresh_token
-      @refresh_token
+      @configured
     end
 
     def signing_key
@@ -76,7 +76,7 @@ module Omnikassa2
 
     def status_pull(notification)
       more_results_available = true
-      while(more_results_available) do
+      while more_results_available
         raise Omnikassa2::InvalidSignatureError unless notification.valid_signature?
         raise Omnikassa2::ExpiringNotificationError if notification.expiring?
 
@@ -95,7 +95,7 @@ module Omnikassa2
     end
   end
 
-  def self.client
+  def self.instance
     Omnikassa2::Client.instance
   end
 

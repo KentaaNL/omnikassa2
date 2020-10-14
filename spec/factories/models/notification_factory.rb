@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class NotificationFactory
   def self.create(params = {})
     create_params = {
@@ -8,7 +10,7 @@ class NotificationFactory
       signature: params.fetch(:signature, :valid_signature)
     }
 
-    if(create_params.fetch(:signature) == :valid_signature)
+    if create_params.fetch(:signature) == :valid_signature
       create_params[:signature] = Omnikassa2::SignatureService.sign(
         Omnikassa2::Notification.new(create_params).to_s
       )

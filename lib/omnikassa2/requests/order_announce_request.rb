@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'omnikassa2/requests/base_request'
 require 'time'
 

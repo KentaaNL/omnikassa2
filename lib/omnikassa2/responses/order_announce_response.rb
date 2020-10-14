@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'omnikassa2/responses/base_response'
 
 module Omnikassa2

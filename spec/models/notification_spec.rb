@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'json'
 require 'omnikassa2/models/access_token'
 require 'timecop'
@@ -5,7 +7,7 @@ require 'time'
 
 describe Omnikassa2::Notification do
   before(:each) do
-    Omnikassa2::client.config(
+    Omnikassa2.instance.config(
       ConfigurationFactory.create(
         signing_key: 'bXlTMWduaW5nSzN5' # Base64.encode64('myS1gningK3y')
       )
@@ -31,7 +33,7 @@ describe Omnikassa2::Notification do
   end
 
   context 'when creating from JSON' do
-    subject {
+    subject do
       Omnikassa2::Notification.from_json(
         JSON.generate(
           authentication: base_params[:authentication],
@@ -41,7 +43,7 @@ describe Omnikassa2::Notification do
           signature: base_params[:signature]
         )
       )
-    }
+    end
 
     it 'stores authentication as string' do
       expect(subject.authentication).to eq(authentication_token)
@@ -96,13 +98,13 @@ describe Omnikassa2::Notification do
     end
 
     context 'when expiry date is at least 5 minutes from now' do
-      subject {
+      subject do
         Omnikassa2::Notification.new(
           base_params.merge(
             expiry: Time.parse('2016-11-24T17:45:00.000+0000')
           )
         )
-      }
+      end
 
       it 'returns false' do
         expect(subject.expiring?).to eq(false)
@@ -110,13 +112,13 @@ describe Omnikassa2::Notification do
     end
 
     context 'when expiry date is less than 30 seconds from now' do
-      subject {
+      subject do
         Omnikassa2::Notification.new(
           base_params.merge(
             expiry: Time.parse('2016-11-24T17:30:29.000+0000')
           )
         )
-      }
+      end
 
       it 'returns true' do
         expect(subject.expiring?).to eq(true)
@@ -124,13 +126,13 @@ describe Omnikassa2::Notification do
     end
 
     context 'when expiry date is in the past' do
-      subject {
+      subject do
         Omnikassa2::Notification.new(
           base_params.merge(
             expiry: Time.parse('2016-11-24T17:25:00.000+0000')
           )
         )
-      }
+      end
 
       it 'returns true' do
         expect(subject.expiring?).to eq(true)

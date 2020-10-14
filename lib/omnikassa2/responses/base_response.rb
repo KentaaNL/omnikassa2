@@ -1,16 +1,16 @@
+# frozen_string_literal: true
+
 module Omnikassa2
   class BaseResponse
+    attr_reader :body
+
     def initialize(http_response)
       @http_response = http_response
-      @body =  @http_response.body ? JSON.parse(@http_response.body) : nil
+      @body = @http_response.body ? JSON.parse(@http_response.body) : nil
     end
 
     def json_body
       @http_response.body
-    end
-
-    def body
-      @body
     end
 
     def code

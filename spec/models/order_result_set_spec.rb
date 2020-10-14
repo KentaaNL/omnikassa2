@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'json'
 require 'omnikassa2/models/access_token'
 require 'timecop'
@@ -34,7 +36,7 @@ describe Omnikassa2::OrderResultSet do
   end
 
   before(:each) do
-    Omnikassa2::client.config(
+    Omnikassa2.instance.config(
       ConfigurationFactory.create(
         signing_key: 'bXlTMWduaW5nSzN5' # Base64.encode64('myS1gningK3y')
       )
@@ -42,13 +44,13 @@ describe Omnikassa2::OrderResultSet do
   end
 
   context 'when creating from JSON' do
-    subject {
+    subject do
       Omnikassa2::OrderResultSet.from_json(
         JSON.generate(
           json_params
         )
       )
-    }
+    end
 
     let(:order) { subject.order_results.first }
 
@@ -103,13 +105,13 @@ describe Omnikassa2::OrderResultSet do
 
   describe 'signature_valid?' do
     context 'when signature is valid' do
-      subject {
+      subject do
         Omnikassa2::OrderResultSet.from_json(
           JSON.generate(
             json_params
           )
         )
-      }
+      end
 
       it 'returns true' do
         expect(subject.valid_signature?).to eq(true)
@@ -117,7 +119,7 @@ describe Omnikassa2::OrderResultSet do
     end
 
     context 'when signature is not valid' do
-      subject {
+      subject do
         Omnikassa2::OrderResultSet.from_json(
           JSON.generate(
             json_params.merge(
@@ -125,7 +127,7 @@ describe Omnikassa2::OrderResultSet do
             )
           )
         )
-      }
+      end
 
       it 'returns false' do
         expect(subject.valid_signature?).to eq(false)

@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 describe Omnikassa2::StatusPullRequest do
   before(:each) do
-    Omnikassa2::client.config(
+    Omnikassa2.instance.config(
       ConfigurationFactory.create(
         base_url: 'https://www.example.org/sandbox'
       )
@@ -16,11 +18,11 @@ describe Omnikassa2::StatusPullRequest do
       )
   end
 
-  let(:notification_token) {
+  let(:notification_token) do
     NotificationFactory.create(
       authentication: 'n0tif1cationT0ken'
     )
-  }
+  end
 
   context 'when sent' do
     it 'only invokes one requests' do
@@ -40,7 +42,7 @@ describe Omnikassa2::StatusPullRequest do
 
     it 'sets header: \'Authorization: Bearer <refresh-token>\'' do
       Omnikassa2::StatusPullRequest.new(notification_token).send_request
-      assert_requested :any, //, headers: {'Authorization' => 'Bearer n0tif1cationT0ken'}
+      assert_requested :any, //, headers: { 'Authorization' => 'Bearer n0tif1cationT0ken' }
     end
   end
 end

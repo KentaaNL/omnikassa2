@@ -1,9 +1,8 @@
+require 'singleton'
+
 module Omnikassa2
   class AccessTokenProvider
-    def self.instance
-      @@instance ||= AccessTokenProvider.new
-      @@instance
-    end
+    include Singleton
 
     def access_token
       refresh_token if token_needs_refresh?

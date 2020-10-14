@@ -65,7 +65,7 @@ module Omnikassa2
   end
 
   def self.announce_order(order_announcement)
-    response = Omnikassa2::OrderAnnounceRequest.new(order_announcement, self).send_request
+    response = Omnikassa2::OrderAnnounceRequest.new(order_announcement).send_request
 
     raise Omnikassa2::HttpError, response.to_s unless response.success?
 

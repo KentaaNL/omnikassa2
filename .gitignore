@@ -8,3 +8,5 @@
 /tmp/
 *.gem
 .idea/
+.ruby-gemset
+.ruby-version

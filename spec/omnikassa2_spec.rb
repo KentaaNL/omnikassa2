@@ -13,7 +13,7 @@ describe Omnikassa2 do
 
       it 'triggers error' do
         expect do
-          Omnikassa2.status_pull(expiring_notification)
+          Omnikassa2::client.status_pull(expiring_notification)
         end.to raise_error(Omnikassa2::ExpiringNotificationError)
       end
     end
@@ -27,7 +27,7 @@ describe Omnikassa2 do
 
       it 'triggers error' do
         expect do
-          Omnikassa2.status_pull(notification_with_invalid_signature)
+          Omnikassa2::client.status_pull(notification_with_invalid_signature)
         end.to raise_error(Omnikassa2::InvalidSignatureError)
       end
     end

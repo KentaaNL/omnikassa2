@@ -3,14 +3,14 @@ require 'time'
 
 describe Omnikassa2::OrderAnnounceRequest do
   before(:each) do
-    Omnikassa2.config(
+    Omnikassa2::client.config(
       ConfigurationFactory.create(
         signing_key: 'bXlTMWduaW5nSzN5', # Base64.encode64('myS1gningK3y')
         base_url: 'https://www.example.org/sandbox'
       )
     )
 
-    WebMock.stub_request(:post, "https://www.example.org/sandbox/order/server/api/order")
+    WebMock.stub_request(:post, "https://www.example.org/sandbox/order/server/api/v2/order")
       .to_return(
         body: {
           signature: 's1gnaTuRe',
@@ -72,7 +72,7 @@ describe Omnikassa2::OrderAnnounceRequest do
 
     it 'uses correct URL' do
       order_announce_request.send_request
-      assert_requested :any, 'https://www.example.org/sandbox/order/server/api/order'
+      assert_requested :any, 'https://www.example.org/sandbox/order/server/api/v2/order'
     end
 
     it 'sets header: \'Content-Type: application/json\'' do
@@ -140,16 +140,6 @@ describe Omnikassa2::OrderAnnounceRequest do
 
         assert_requested(:any, //) do |request|
           JSON.parse(request.body)['paymentBrandForce'] == 'FORCE_ALWAYS'
-        end
-      end
-
-      it 'has a signature' do
-        Timecop.freeze Time.parse('2017-02-06T08:32:51.759+01:00')
-        minimal_order_announce_request.send_request
-
-        assert_requested(:any, //) do |request|
-          HASH = '020f1b1b394a4b433a20499facc9660679154cf96b998e6a4769fbb2b04e3ecd60a8300fdf89c0d6c78aac14c3bc069444cd42e58a852f0c4a4764b8646c9fb7'
-          JSON.parse(request.body)['signature'] == HASH
         end
       end
     end

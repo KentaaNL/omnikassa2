@@ -26,7 +26,7 @@ Or install it yourself as:
 You can find your `refresh_token` and `signing_key` in Omnikassa's dashboard. The `base_url` corresponds with the base_url of the Omnikassa2 API. You can use `:sandbox` or `:production` as well.
 
 ```ruby
-Omnikassa2.config(
+Omnikassa2::client.config(
   refresh_token: 'my_refresh_token',
   signing_key: 'my_signing_key',
   base_url: :sandbox # Shortcut for 'https://betalen.rabobank.nl/omnikassa-api-sandbox'
@@ -89,7 +89,7 @@ class MyOmnikassaWebhookController
     notification = Omnikassa2::Notification.from_json request.body
 
     # Use notification object to retrieve statusses
-    Omnikassa2.status_pull(notification) do |order_status|
+    Omnikassa2::client.status_pull(notification) do |order_status|
       # Do something
       puts "Order: #{ order_status.merchant_order_id}"
       puts "Paid amount: #{ order_status.paid_amount.amount }"

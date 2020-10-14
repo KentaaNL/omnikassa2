@@ -13,7 +13,7 @@ end
 def setup_test_environment
   WebMock.reset!
 
-  Omnikassa2.config(
+  Omnikassa2::client.config(
     ConfigurationFactory.create
   )
 

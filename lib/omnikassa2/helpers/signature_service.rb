@@ -3,7 +3,7 @@ module Omnikassa2
     def self.sign(string)
       OpenSSL::HMAC.hexdigest(
         OpenSSL::Digest.new('sha512'),
-        Omnikassa2.signing_key,
+        Omnikassa2::client.signing_key,
         string
       )
     end

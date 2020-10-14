@@ -1,6 +1,7 @@
 require 'openssl'
 require 'net/http'
 require 'base64'
+require 'singleton'
 
 require 'omnikassa2/version'
 
@@ -26,70 +27,76 @@ require 'omnikassa2/responses/refresh_response'
 require 'omnikassa2/responses/status_pull_response'
 
 module Omnikassa2
-  @@configured = false
+  class Client
+    include Singleton
 
-  SETTINGS = :refresh_token, :signing_key, :base_url
+    SETTINGS = :refresh_token, :signing_key, :base_url
 
-  def self.config(settings)
-    for setting in SETTINGS
-      value = settings[setting.to_sym]
-      raise ConfigError, "config setting '#{setting}' missing" if value.nil?
+    def config(settings)
+      for setting in SETTINGS
+        value = settings[setting.to_sym]
+        raise ConfigError, "config setting '#{setting}' missing" if value.nil?
 
-      class_variable_set '@@' + setting.to_s, value
-    end
-
-    @@configured = true
-  end
-
-  def self.configured?
-    @@configured
-  end
-
-  def self.refresh_token
-    @@refresh_token
-  end
-
-  def self.signing_key
-    Base64.decode64(@@signing_key)
-  end
-
-  def self.base_url
-    case @@base_url
-    when :production
-      'https://betalen.rabobank.nl/omnikassa-api'
-    when :sandbox
-      'https://betalen.rabobank.nl/omnikassa-api-sandbox'
-    else
-      @@base_url
-    end
-  end
-
-  def self.announce_order(order_announcement)
-    response = Omnikassa2::OrderAnnounceRequest.new(order_announcement).send_request
-
-    raise Omnikassa2::HttpError, response.to_s unless response.success?
-
-    response
-  end
-
-  def self.status_pull(notification)
-    more_results_available = true
-    while(more_results_available) do
-      raise Omnikassa2::InvalidSignatureError unless notification.valid_signature?
-      raise Omnikassa2::ExpiringNotificationError if notification.expiring?
-
-      response = Omnikassa2::StatusPullRequest.new(notification).send_request
-
-      raise Omnikassa2::HttpError, response.to_s unless response.success?
-      raise Omnikassa2::InvalidSignatureError unless response.valid_signature?
-
-      result_set = response.order_result_set
-      result_set.order_results.each do |order_result|
-        yield order_result
+        instance_variable_set '@' + setting.to_s, value
       end
 
-      more_results_available = result_set.more_order_results_available
+      @configured = true
     end
+
+    def configured?
+      @configured == true
+    end
+
+    def refresh_token
+      @refresh_token
+    end
+
+    def signing_key
+      Base64.decode64(@signing_key)
+    end
+
+    def base_url
+      case @base_url
+      when :production
+        'https://betalen.rabobank.nl/omnikassa-api'
+      when :sandbox
+        'https://betalen.rabobank.nl/omnikassa-api-sandbox'
+      else
+        @base_url
+      end
+    end
+
+    def announce_order(order_announcement)
+      response = Omnikassa2::OrderAnnounceRequest.new(order_announcement).send_request
+
+      raise Omnikassa2::HttpError, response.to_s unless response.success?
+
+      response
+    end
+
+    def status_pull(notification)
+      more_results_available = true
+      while(more_results_available) do
+        raise Omnikassa2::InvalidSignatureError unless notification.valid_signature?
+        raise Omnikassa2::ExpiringNotificationError if notification.expiring?
+
+        response = Omnikassa2::StatusPullRequest.new(notification).send_request
+
+        raise Omnikassa2::HttpError, response.to_s unless response.success?
+        raise Omnikassa2::InvalidSignatureError unless response.valid_signature?
+
+        result_set = response.order_result_set
+        result_set.order_results.each do |order_result|
+          yield order_result
+        end
+
+        more_results_available = result_set.more_order_results_available
+      end
+    end
+  end
+
+  def self.client
+    Omnikassa2::Client.instance
   end
 
   # The common base class for all exceptions raised by OmniKassa

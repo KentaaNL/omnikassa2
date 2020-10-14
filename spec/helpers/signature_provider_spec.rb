@@ -1,6 +1,6 @@
 describe Omnikassa2::SignatureService do
   before(:each) do
-    Omnikassa2.config(
+    Omnikassa2::client.config(
       ConfigurationFactory.create(
         signing_key: 'bXlTMWduaW5nSzN5' # Base64.encode64('myS1gningK3y')
       )

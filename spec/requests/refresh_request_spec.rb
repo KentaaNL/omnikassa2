@@ -1,6 +1,6 @@
 describe Omnikassa2::RefreshRequest do
   before(:each) do
-    Omnikassa2.config(
+    Omnikassa2::client.config(
       ConfigurationFactory.create(
         refresh_token: 'reFresht0ken',
         base_url: 'https://www.example.org/sandbox'

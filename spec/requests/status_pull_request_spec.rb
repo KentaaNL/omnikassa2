@@ -1,6 +1,6 @@
 describe Omnikassa2::StatusPullRequest do
   before(:each) do
-    Omnikassa2.config(
+    Omnikassa2::client.config(
       ConfigurationFactory.create(
         base_url: 'https://www.example.org/sandbox'
       )

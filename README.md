@@ -88,7 +88,7 @@ class MyOmnikassaWebhookController
     # Create notification object
     notification = Omnikassa2::Notification.from_json request.body
 
-    # Use notification object to retrieve statusses
+    # Use notification object to retrieve statuses
     Omnikassa2.instance.status_pull(notification) do |order_status|
       # Do something
       puts "Order: #{ order_status.merchant_order_id}"

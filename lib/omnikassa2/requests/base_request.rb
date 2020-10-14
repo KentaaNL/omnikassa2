@@ -60,11 +60,12 @@ module Omnikassa2
 
     def body_raw
       return nil if body.nil?
-      return body if content_type.nil?
 
       case content_type
       when :json
         body.to_json
+      else
+        body
       end
     end
 

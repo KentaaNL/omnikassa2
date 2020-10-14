@@ -31,19 +31,12 @@ require 'omnikassa2/responses/status_pull_response'
 module Omnikassa2
   class Client
     include Singleton
-
     attr_reader :refresh_token
 
-    SETTINGS = %i[refresh_token signing_key base_url].freeze
-
     def config(settings)
-      SETTINGS.each do |setting|
-        value = settings[setting.to_sym]
-        raise ConfigError, "config setting '#{setting}' missing" if value.nil?
-
-        instance_variable_set '@' + setting.to_s, value
-      end
-
+      @refresh_token = settings.fetch(:refresh_token)
+      @signing_key = settings.fetch(:signing_key)
+      @base_url = settings.fetch(:base_url, :production)
       @configured = true
     end
 
@@ -101,10 +94,6 @@ module Omnikassa2
 
   # The common base class for all exceptions raised by OmniKassa
   class OmniKassaError < StandardError
-  end
-
-  # Raised if something is wrong with the configuration parameters
-  class ConfigError < OmniKassaError
   end
 
   class InvalidSignatureError < OmniKassaError

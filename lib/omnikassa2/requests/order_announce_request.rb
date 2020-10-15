@@ -5,7 +5,7 @@ require 'time'
 
 module Omnikassa2
   class OrderAnnounceRequest < BaseRequest
-    def initialize(merchant_order, config = {})
+    def initialize(merchant_order, config)
       super(config)
       @merchant_order = merchant_order
     end

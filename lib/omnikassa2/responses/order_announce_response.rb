@@ -5,16 +5,15 @@ require 'omnikassa2/responses/base_response'
 module Omnikassa2
   class OrderAnnounceResponse < BaseResponse
     def omnikassa_order_id
-      body['omnikassaOrderId']
+      body[:omnikassaOrderId]
     end
 
     def redirect_url
-      body['redirectUrl']
+      body[:redirectUrl]
     end
 
-    def valid_signature?
-      string = OrderAnnounceResponse.csv_serializer.serialize(self)
-      SignatureService.validate(string, signature)
+    def to_s
+      OrderAnnounceResponse.csv_serializer.serialize(self)
     end
 
     private

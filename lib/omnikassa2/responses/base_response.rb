@@ -2,11 +2,12 @@
 
 module Omnikassa2
   class BaseResponse
-    attr_reader :body
+    attr_reader :body, :config
 
-    def initialize(http_response)
+    def initialize(http_response, config)
       @http_response = http_response
-      @body = @http_response.body ? JSON.parse(@http_response.body) : nil
+      @body = @http_response.body ? JSON.parse(@http_response.body, symbolize_names: true) : nil
+      @config = config
     end
 
     def json_body

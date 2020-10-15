@@ -5,13 +5,6 @@ require 'time'
 
 describe Omnikassa2::OrderAnnounceRequest do
   before(:each) do
-    Omnikassa2.instance.config(
-      ConfigurationFactory.create(
-        signing_key: 'bXlTMWduaW5nSzN5', # Base64.encode64('myS1gningK3y')
-        base_url: 'https://www.example.org/sandbox'
-      )
-    )
-
     WebMock.stub_request(:post, 'https://www.example.org/sandbox/order/server/api/v2/order')
            .to_return(
              body: {
@@ -32,6 +25,8 @@ describe Omnikassa2::OrderAnnounceRequest do
     }
   end
 
+  let(:config) { ConfigurationFactory.create(signing_key: 'myS1gningK3y') }
+
   let(:minimal_merchant_order) do
     MerchantOrderFactory.create(
       base_params
@@ -50,14 +45,14 @@ describe Omnikassa2::OrderAnnounceRequest do
   let(:minimal_order_announce_request) do
     Omnikassa2::OrderAnnounceRequest.new(
       minimal_merchant_order,
-      access_token: 'myAcCEssT0k3n'
+      config.merge(access_token: 'myAcCEssT0k3n')
     )
   end
 
   let(:order_announce_request) do
     Omnikassa2::OrderAnnounceRequest.new(
       merchant_order,
-      access_token: 'myAcCEssT0k3n'
+      config.merge(access_token: 'myAcCEssT0k3n')
     )
   end
 

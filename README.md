@@ -26,7 +26,7 @@ Or install it yourself as:
 You can find your `refresh_token` and `signing_key` in Omnikassa's dashboard. The `base_url` corresponds with the base_url of the Omnikassa2 API. You can use `:sandbox` or `:production` as well.
 
 ```ruby
-Omnikassa2.instance.config(
+client = Omnikassa2::Client.new(
   refresh_token: 'my_refresh_token',
   signing_key: 'my_signing_key',
   base_url: :sandbox # Shortcut for 'https://betalen.rabobank.nl/omnikassa-api-sandbox'
@@ -37,7 +37,7 @@ For [Status Pull](#status-pull), it is required to configure a webhook as well (
 
 ## Announce order
 ```ruby
-response = Omnikassa2.instance.announce_order(
+response = client.announce_order(
   Omnikassa2::MerchantOrder.new(
     merchant_order_id: 'order123',
     amount: Omnikassa2::Money.new(
@@ -64,7 +64,8 @@ class MyLandingPageController
     # Validate passed parameters
     valid_params = Omnikassa2::SignatureService.validate(
       params[:order_id] + ',' + params[:status],
-      params[:signature]
+      params[:signature],
+      'my_signing_key'
     )
 
     if valid_params
@@ -86,13 +87,13 @@ Performing a status pull is only possible when notified by Omnikassa through a c
 class MyOmnikassaWebhookController
   def post(request)
     # Create notification object
-    notification = Omnikassa2::Notification.from_json request.body
+    notification = Omnikassa2::Notification.from_json(request.body)
 
     # Use notification object to retrieve statuses
-    Omnikassa2.instance.status_pull(notification) do |order_status|
+    client.status_pull(notification) do |order_status|
       # Do something
-      puts "Order: #{ order_status.merchant_order_id}"
-      puts "Paid amount: #{ order_status.paid_amount.amount }"
+      puts "Order: #{order_status.merchant_order_id}"
+      puts "Paid amount: #{order_status.paid_amount.amount}"
     end
   end
 end

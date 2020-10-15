@@ -17,12 +17,15 @@ module Omnikassa2
     end
 
     def self.from_json(json)
-      hash = JSON.parse(json)
-      AccessToken.new(
-        token: hash['token'],
-        valid_until: Time.parse(hash['validUntil']),
-        duration_in_millis: hash['durationInMillis']
-      )
+      hash = JSON.parse(json, symbolize_names: true)
+      params = {
+        token: hash[:token],
+        valid_until: Time.parse(hash[:validUntil]),
+        duration_in_millis: hash[:durationInMillis]
+
+      }
+
+      AccessToken.new(params)
     end
 
     def expiring?

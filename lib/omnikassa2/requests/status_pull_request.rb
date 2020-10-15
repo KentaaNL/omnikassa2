@@ -5,9 +5,8 @@ require 'omnikassa2'
 
 module Omnikassa2
   class StatusPullRequest < BaseRequest
-    def initialize(notification, config = {})
+    def initialize(notification, config)
       super(config)
-
       @notification = notification
     end
 

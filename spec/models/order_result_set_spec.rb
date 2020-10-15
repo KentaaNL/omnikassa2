@@ -35,20 +35,12 @@ describe Omnikassa2::OrderResultSet do
     }
   end
 
-  before(:each) do
-    Omnikassa2.instance.config(
-      ConfigurationFactory.create(
-        signing_key: 'bXlTMWduaW5nSzN5' # Base64.encode64('myS1gningK3y')
-      )
-    )
-  end
+  let(:config) { ConfigurationFactory.create(signing_key: 'myS1gningK3y') }
 
   context 'when creating from JSON' do
     subject do
       Omnikassa2::OrderResultSet.from_json(
-        JSON.generate(
-          json_params
-        )
+        JSON.generate(json_params)
       )
     end
 
@@ -107,30 +99,24 @@ describe Omnikassa2::OrderResultSet do
     context 'when signature is valid' do
       subject do
         Omnikassa2::OrderResultSet.from_json(
-          JSON.generate(
-            json_params
-          )
+          JSON.generate(json_params)
         )
       end
 
       it 'returns true' do
-        expect(subject.valid_signature?).to eq(true)
+        expect(subject.valid_signature?(config[:signing_key])).to eq(true)
       end
     end
 
     context 'when signature is not valid' do
       subject do
         Omnikassa2::OrderResultSet.from_json(
-          JSON.generate(
-            json_params.merge(
-              signature: 'invalidSignature'
-            )
-          )
+          JSON.generate(json_params.merge(signature: 'invalidSignature'))
         )
       end
 
       it 'returns false' do
-        expect(subject.valid_signature?).to eq(false)
+        expect(subject.valid_signature?(config[:signing_key])).to eq(false)
       end
     end
   end

@@ -2,16 +2,16 @@
 
 module Omnikassa2
   class SignatureService
-    def self.sign(string)
+    def self.sign(string, signing_key)
       OpenSSL::HMAC.hexdigest(
         OpenSSL::Digest.new('sha512'),
-        Omnikassa2.instance.signing_key,
+        signing_key,
         string
       )
     end
 
-    def self.validate(string, signature)
-      sign(string) == signature
+    def self.validate(string, signature, signing_key)
+      sign(string, signing_key) == signature
     end
   end
 end

@@ -15,10 +15,6 @@ end
 def setup_test_environment
   WebMock.reset!
 
-  Omnikassa2.instance.config(
-    ConfigurationFactory.create
-  )
-
   Timecop.freeze Time.parse('2016-11-24T17:30:00.000+0000')
 end
 

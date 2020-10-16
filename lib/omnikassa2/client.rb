@@ -41,7 +41,7 @@ module Omnikassa2
       response
     end
 
-    def status_pull(notification)
+    def status_pull(notification, &block)
       more_results_available = true
       while more_results_available
         raise Omnikassa2::InvalidSignatureError unless notification.valid_signature?(signing_key)
@@ -53,9 +53,7 @@ module Omnikassa2
         raise Omnikassa2::InvalidSignatureError unless response.valid_signature?(signing_key)
 
         result_set = response.order_result_set
-        result_set.order_results.each do |order_result|
-          yield order_result
-        end
+        result_set.order_results.each(&block)
 
         more_results_available = result_set.more_order_results_available
       end

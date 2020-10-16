@@ -2,16 +2,16 @@
 
 describe Omnikassa2::StatusPullRequest do
   before(:each) do
-    WebMock.stub_request(:any, //)
-      .to_return(
-        body: StatusPullResponseBodyFactory.create(
-          { signature: :valid_signature,
-            moreOrderResultsAvailable: false,
-            orderResults: []
-          },
-          config
-        ).to_json
-      )
+    stub_request(:any, //).to_return(
+      body: StatusPullResponseBodyFactory.create(
+        {
+          signature: :valid_signature,
+          moreOrderResultsAvailable: false,
+          orderResults: []
+        },
+        config
+      ).to_json
+    )
   end
 
   let(:notification_token) do

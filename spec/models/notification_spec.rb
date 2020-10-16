@@ -6,7 +6,8 @@ require 'timecop'
 require 'time'
 
 describe Omnikassa2::Notification do
-  let(:authentication_token) do 'eyJraWQiOiJOTyIsImFsZyI6IkVTMjU2In0.eyJubyMiOjEyMywibWtpZCI6NSwibm8kIjoibWVyY2hhbnQub3JkZXIuc3RhdHVzLmNoYW5nZWQiLCJjaWQiOiJhYmNkLTEyMzQiLCJleHAiOjE0ODg0NjQ1MDN9.MEUCIHtPFoKmXAc7JNQjj0U5rWpl0zR9RsQvgj_nckHBngHAiEAmbtgrxaiy4cS3BTHd0DJ8md3Rn7V13Nv35m5DurY1wI'
+  let(:authentication_token) do
+    'eyJraWQiOiJOTyIsImFsZyI6IkVTMjU2In0.eyJubyMiOjEyMywibWtpZCI6NSwibm8kIjoibWVyY2hhbnQub3JkZXIuc3RhdHVzLmNoYW5nZWQiLCJjaWQiOiJhYmNkLTEyMzQiLCJleHAiOjE0ODg0NjQ1MDN9.MEUCIHtPFoKmXAc7JNQjj0U5rWpl0zR9RsQvgj_nckHBngHAiEAmbtgrxaiy4cS3BTHd0DJ8md3Rn7V13Nv35m5DurY1wI'
   end
 
   let(:signature) do

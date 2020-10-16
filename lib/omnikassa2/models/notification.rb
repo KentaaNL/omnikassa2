@@ -25,7 +25,7 @@ module Omnikassa2
         expiry: Time.parse(hash[:expiry]),
         event_name: hash[:eventName],
         poi_id: hash[:poiId],
-        signature: hash[:signature],
+        signature: hash[:signature]
       }
 
       Notification.new(params)
@@ -42,8 +42,6 @@ module Omnikassa2
     def to_s
       Notification.csv_serializer.serialize(self)
     end
-
-    private
 
     def self.csv_serializer
       CSVSerializer.new([

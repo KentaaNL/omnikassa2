@@ -5,13 +5,12 @@ require 'time'
 
 describe Omnikassa2::OrderAnnounceRequest do
   before(:each) do
-    WebMock.stub_request(:post, 'https://www.example.org/sandbox/order/server/api/v2/order')
-           .to_return(
-             body: {
-               signature: 's1gnaTuRe',
-               redirectUrl:  'https://www.example.org/pay?token=S0meT0ken&?lang=nl'
-             }.to_json
-           )
+    stub_request(:post, 'https://www.example.org/sandbox/order/server/api/v2/order').to_return(
+      body: {
+        signature: 's1gnaTuRe',
+        redirectUrl: 'https://www.example.org/pay?token=S0meT0ken&?lang=nl'
+      }.to_json
+    )
   end
 
   let(:base_params) do

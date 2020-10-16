@@ -16,8 +16,6 @@ module Omnikassa2
       OrderAnnounceResponse.csv_serializer.serialize(self)
     end
 
-    private
-
     def self.csv_serializer
       CSVSerializer.new([
         { field: :redirect_url },

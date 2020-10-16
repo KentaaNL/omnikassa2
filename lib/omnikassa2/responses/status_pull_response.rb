@@ -16,8 +16,6 @@ module Omnikassa2
       order_result_set.valid_signature?(signing_key)
     end
 
-    private
-
     def self.csv_serializer
       Omnikassa2::CSVSerializer.new([
         { field: :authentication },

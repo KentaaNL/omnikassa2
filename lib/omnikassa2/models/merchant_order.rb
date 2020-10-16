@@ -33,8 +33,6 @@ module Omnikassa2
       MerchantOrder.csv_serializer.serialize(self)
     end
 
-    private
-
     def self.csv_serializer
       Omnikassa2::CSVSerializer.new([
         { field: :timestamp },

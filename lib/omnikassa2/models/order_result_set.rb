@@ -48,8 +48,6 @@ module Omnikassa2
       OrderResultSet.new(params)
     end
 
-    private
-
     def self.csv_serializer
       Omnikassa2::CSVSerializer.new([
         { field: :more_order_results_available },

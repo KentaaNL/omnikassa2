@@ -2,14 +2,13 @@
 
 describe Omnikassa2::RefreshRequest do
   before(:each) do
-    WebMock.stub_request(:any, //)
-           .to_return(
-             body: {
-               token: 'myAccEssT0ken',
-               validUntil:  '2016-11-24T16:54:51.216+0000',
-               durationInMillis: 28_800_000
-             }.to_json
-           )
+    stub_request(:any, //).to_return(
+      body: {
+        token: 'myAccEssT0ken',
+        validUntil: '2016-11-24T16:54:51.216+0000',
+        durationInMillis: 28_800_000
+      }.to_json
+    )
   end
 
   let(:config) { ConfigurationFactory.create(refresh_token: 'reFresht0ken') }

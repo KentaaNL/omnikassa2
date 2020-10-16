@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ConfigurationFactory
   def self.create(params = {})
     {

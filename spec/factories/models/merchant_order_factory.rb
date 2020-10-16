@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class MerchantOrderFactory
   def self.create(params = {})
     Omnikassa2::MerchantOrder.new(

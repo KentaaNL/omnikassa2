@@ -1,9 +1,11 @@
+# frozen_string_literal: true
+
 require 'omnikassa2/requests/base_request'
 require 'time'
 
 module Omnikassa2
   class OrderAnnounceRequest < BaseRequest
-    def initialize(merchant_order, config = {})
+    def initialize(merchant_order, config)
       super(config)
       @merchant_order = merchant_order
     end
@@ -21,21 +23,22 @@ module Omnikassa2
     end
 
     def path
-      '/order/server/api/order'
+      '/order/server/api/v2/order'
     end
 
     def body
       result = {
-        'timestamp' => @merchant_order.timestamp,
-        'merchantOrderId' => @merchant_order.merchant_order_id,
         'amount' => {
           'amount' => @merchant_order.amount.amount.to_s,
           'currency' => @merchant_order.amount.currency
         },
+        'merchantOrderId' => @merchant_order.merchant_order_id,
         'merchantReturnURL' => @merchant_order.merchant_return_url,
-        'signature' => @merchant_order.signature
+        'timestamp' => @merchant_order.timestamp
       }
 
+      result['language'] = @merchant_order.language unless @merchant_order.language.nil?
+      result['description'] = @merchant_order.description unless @merchant_order.description.nil?
       result['paymentBrand'] = @merchant_order.payment_brand unless @merchant_order.payment_brand.nil?
       result['paymentBrandForce'] = @merchant_order.payment_brand_force unless @merchant_order.payment_brand_force.nil?
 

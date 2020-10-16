@@ -1,0 +1,33 @@
+AllCops:
+  TargetRubyVersion: 2.4
+  DisplayCopNames: true
+  DisplayStyleGuide: true
+  NewCops: enable
+
+
+Layout/FirstArrayElementIndentation:
+  EnforcedStyle: consistent
+
+Layout/LineLength:
+  Enabled: false
+
+
+Metrics/AbcSize:
+  Max: 27
+
+Metrics/BlockLength:
+  Exclude:
+    - 'spec/**/*'
+
+Metrics/MethodLength:
+  Enabled: false
+
+
+Style/AccessorGrouping:
+  Enabled: false
+
+Style/Documentation:
+  Enabled: false
+
+Style/NumericPredicate:
+  Enabled: false

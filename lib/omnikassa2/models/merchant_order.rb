@@ -1,8 +1,13 @@
+# frozen_string_literal: true
+
 module Omnikassa2
   class MerchantOrder
     attr_reader :merchant_return_url
     attr_reader :merchant_order_id
     attr_reader :amount
+
+    attr_reader :language
+    attr_reader :description
 
     attr_reader :payment_brand
     attr_reader :payment_brand_force
@@ -11,6 +16,9 @@ module Omnikassa2
       @merchant_return_url = params.fetch(:merchant_return_url)
       @merchant_order_id = params.fetch(:merchant_order_id)
       @amount = params.fetch(:amount)
+
+      @language = params.fetch(:language, nil)
+      @description = params.fetch(:description, nil)
 
       @payment_brand = params.fetch(:payment_brand, nil)
       @payment_brand_force = params.fetch(:payment_brand_force, nil)
@@ -21,15 +29,9 @@ module Omnikassa2
       @timestamp
     end
 
-    def signature
-      SignatureService.sign to_s
-    end
-
     def to_s
       MerchantOrder.csv_serializer.serialize(self)
     end
-
-    private
 
     def self.csv_serializer
       Omnikassa2::CSVSerializer.new([

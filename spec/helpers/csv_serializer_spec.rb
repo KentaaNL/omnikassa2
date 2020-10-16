@@ -1,25 +1,27 @@
+# frozen_string_literal: true
+
 describe Omnikassa2::CSVSerializer do
   it 'includes single value' do
     exporter = Omnikassa2::CSVSerializer.new([
       { field: :field_one }
     ])
 
-    csv_string = exporter.serialize({
+    csv_string = exporter.serialize(
       field_one: 'Hello World'
-    })
+    )
 
     expect(csv_string).to eq('Hello World')
   end
 
-  it 'ingores unconfigured fields' do
+  it 'ignores unconfigured fields' do
     exporter = Omnikassa2::CSVSerializer.new([
       { field: :field_one }
     ])
 
-    csv_string = exporter.serialize({
+    csv_string = exporter.serialize(
       field_one: 'Hello World',
       unconfigured_field: 'Something'
-    })
+    )
 
     expect(csv_string).to eq('Hello World')
   end
@@ -30,10 +32,10 @@ describe Omnikassa2::CSVSerializer do
       { field: :field_two }
     ])
 
-    csv_string = exporter.serialize({
+    csv_string = exporter.serialize(
       field_one: 'Hello World',
       field_two: 123
-    })
+    )
 
     expect(csv_string).to eq('Hello World,123')
   end
@@ -44,10 +46,10 @@ describe Omnikassa2::CSVSerializer do
       { field: :field_two }
     ])
 
-    csv_string = exporter.serialize({
+    csv_string = exporter.serialize(
       field_two: 123,
       field_one: 'Hello World'
-    })
+    )
 
     expect(csv_string).to eq('Hello World,123')
   end
@@ -58,10 +60,10 @@ describe Omnikassa2::CSVSerializer do
       { field: :field_two }
     ])
 
-    csv_string = exporter.serialize({
+    csv_string = exporter.serialize(
       field_one: 'Hello World',
       field_two: nil
-    })
+    )
 
     expect(csv_string).to eq('Hello World')
   end
@@ -72,10 +74,10 @@ describe Omnikassa2::CSVSerializer do
       { field: :field_two, include_if_nil: true }
     ])
 
-    csv_string = exporter.serialize({
+    csv_string = exporter.serialize(
       field_one: 'Hello World',
       field_two: nil
-    })
+    )
 
     expect(csv_string).to eq('Hello World,')
   end
@@ -90,11 +92,11 @@ describe Omnikassa2::CSVSerializer do
       }
     ])
 
-    csv_string = exporter.serialize({
+    csv_string = exporter.serialize(
       outer: {
         inner: 'Hello World'
       }
-    })
+    )
 
     expect(csv_string).to eq('Hello World')
   end
@@ -109,12 +111,12 @@ describe Omnikassa2::CSVSerializer do
       }
     ])
 
-    csv_string = exporter.serialize({
+    csv_string = exporter.serialize(
       outer: [
         { inner: 'Hello World' },
         { inner: 123 }
       ]
-    })
+    )
 
     expect(csv_string).to eq('Hello World,123')
   end

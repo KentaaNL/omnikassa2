@@ -1,17 +1,11 @@
+# frozen_string_literal: true
+
 require 'json'
 require 'omnikassa2/models/access_token'
 require 'timecop'
 require 'time'
 
 describe Omnikassa2::Notification do
-  before(:each) do
-    Omnikassa2.config(
-      ConfigurationFactory.create(
-        signing_key: 'bXlTMWduaW5nSzN5' # Base64.encode64('myS1gningK3y')
-      )
-    )
-  end
-
   let(:authentication_token) do
     'eyJraWQiOiJOTyIsImFsZyI6IkVTMjU2In0.eyJubyMiOjEyMywibWtpZCI6NSwibm8kIjoibWVyY2hhbnQub3JkZXIuc3RhdHVzLmNoYW5nZWQiLCJjaWQiOiJhYmNkLTEyMzQiLCJleHAiOjE0ODg0NjQ1MDN9.MEUCIHtPFoKmXAc7JNQjj0U5rWpl0zR9RsQvgj_nckHBngHAiEAmbtgrxaiy4cS3BTHd0DJ8md3Rn7V13Nv35m5DurY1wI'
   end
@@ -19,6 +13,8 @@ describe Omnikassa2::Notification do
   let(:signature) do
     'f3aef18aedb04b9f65c6036414ee8c23762db3d245b5bd48519a81174cd59be8dd8ccd2a269fdbc8ed34f584df2c6b41a3a8944f30d914b82db03e18b51274ef'
   end
+
+  let(:config) { ConfigurationFactory.create(signing_key: 'myS1gningK3y') }
 
   let(:base_params) do
     {
@@ -31,7 +27,7 @@ describe Omnikassa2::Notification do
   end
 
   context 'when creating from JSON' do
-    subject {
+    subject do
       Omnikassa2::Notification.from_json(
         JSON.generate(
           authentication: base_params[:authentication],
@@ -41,7 +37,7 @@ describe Omnikassa2::Notification do
           signature: base_params[:signature]
         )
       )
-    }
+    end
 
     it 'stores authentication as string' do
       expect(subject.authentication).to eq(authentication_token)
@@ -71,7 +67,7 @@ describe Omnikassa2::Notification do
       subject { Omnikassa2::Notification.new(base_params) }
 
       it 'returns true' do
-        expect(subject.valid_signature?).to eq(true)
+        expect(subject.valid_signature?(config[:signing_key])).to eq(true)
       end
     end
 
@@ -85,7 +81,7 @@ describe Omnikassa2::Notification do
       end
 
       it 'returns false' do
-        expect(subject.valid_signature?).to eq(false)
+        expect(subject.valid_signature?(config[:signing_key])).to eq(false)
       end
     end
   end
@@ -96,13 +92,13 @@ describe Omnikassa2::Notification do
     end
 
     context 'when expiry date is at least 5 minutes from now' do
-      subject {
+      subject do
         Omnikassa2::Notification.new(
           base_params.merge(
             expiry: Time.parse('2016-11-24T17:45:00.000+0000')
           )
         )
-      }
+      end
 
       it 'returns false' do
         expect(subject.expiring?).to eq(false)
@@ -110,13 +106,13 @@ describe Omnikassa2::Notification do
     end
 
     context 'when expiry date is less than 30 seconds from now' do
-      subject {
+      subject do
         Omnikassa2::Notification.new(
           base_params.merge(
             expiry: Time.parse('2016-11-24T17:30:29.000+0000')
           )
         )
-      }
+      end
 
       it 'returns true' do
         expect(subject.expiring?).to eq(true)
@@ -124,13 +120,13 @@ describe Omnikassa2::Notification do
     end
 
     context 'when expiry date is in the past' do
-      subject {
+      subject do
         Omnikassa2::Notification.new(
           base_params.merge(
             expiry: Time.parse('2016-11-24T17:25:00.000+0000')
           )
         )
-      }
+      end
 
       it 'returns true' do
         expect(subject.expiring?).to eq(true)

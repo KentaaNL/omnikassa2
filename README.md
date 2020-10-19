@@ -1,6 +1,6 @@
 # Omnikassa2
 
-This Gem provides the Ruby integration for the new Omnikassa 2.0 JSON API from the
+This Gem provides the Ruby integration for the new OmniKassa 2.0 JSON API from the
 Rabobank. The documentation for this API is currently here:
 [Rabobank.nl](https://www.rabobank.nl/images/Handleiding_Rabo_OmniKassa_UK_29974797.pdf)
 
@@ -10,20 +10,16 @@ Rabobank. The documentation for this API is currently here:
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'omnikassa2'
+gem 'omnikassa2', git: 'https://github.com/KentaaNL/omnikassa2.git'
 ```
 
 And then execute:
 
     $ bundle
 
-Or install it yourself as:
-
-    $ gem install omnikassa2
-
 
 ## Configuration
-You can find your `refresh_token` and `signing_key` in Omnikassa's dashboard. The `base_url` corresponds with the base_url of the Omnikassa2 API. You can use `:sandbox` or `:production` as well.
+You can find your `refresh_token` and `signing_key` in OmniKassa's dashboard. The `base_url` corresponds with the base_url of the OmniKassa 2.0 API. You can use `:sandbox` or `:production` as well.
 
 ```ruby
 client = Omnikassa2::Client.new(
@@ -53,7 +49,7 @@ redirect_url = response.redirect_url
 # Send client to 'redirect_url'
 ```
 
-Omnikassa will now allow the user to pay. When the payment is finished or terminated, the user will be redirected to the given `merchant_return_url`. These query parameters are `order_id`, `status` and `signature`. We must validate the signature in order to trust the provided parameters:
+OmniKassa will now allow the user to pay. When the payment is finished or terminated, the user will be redirected to the given `merchant_return_url`. These query parameters are `order_id`, `status` and `signature`. We must validate the signature in order to trust the provided parameters:
 
 ```ruby
 # pseudocode
@@ -80,14 +76,14 @@ end
 ```
 
 ## Status pull
-Performing a status pull is only possible when notified by Omnikassa through a configured webhook in the dashboard.
+Performing a status pull is only possible when notified by OmniKassa through a configured webhook in the dashboard.
 
 ```ruby
 # pseudocode
 class MyOmnikassaWebhookController
   def post(request)
     # Create notification object
-    notification = Omnikassa2::Notification.from_json(request.body)
+    notification = Omnikassa2::Notification.from_json(request.raw_post)
 
     # Use notification object to retrieve statuses
     client.status_pull(notification) do |order_status|
@@ -99,7 +95,10 @@ class MyOmnikassaWebhookController
 end
 ```
 
-## Project Status / Contributing
-This omnikassa2 gem is actively used within other Kabisa projects but has no regular expected maintenance or releases of itself. We intent to keep this gem functional and strive for high quality, but effort is dependent on related projects.
+## Contributing
 
-Bug reports, suggestions, questions and pull requests are all welcome on GitHub at https://github.com/kabisa/omnikassa2, but we can't make any promises on a follow-up.
+Bug reports and pull requests are welcome on GitHub at https://github.com/KentaaNL/omnikassa2.
+
+## License
+
+The gem is available as open source under the terms of the [MIT License](https://opensource.org/licenses/MIT).

@@ -2,7 +2,7 @@
 
 module Omnikassa2
   class Client
-    attr_reader :refresh_token, :signing_key, :base_rl
+    attr_reader :refresh_token, :signing_key, :base_url
 
     def initialize(refresh_token:, signing_key:, base_url: :production)
       @refresh_token = refresh_token

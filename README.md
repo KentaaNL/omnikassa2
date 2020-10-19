@@ -43,7 +43,7 @@ response = client.announce_order(
     language: 'NL',
     merchant_order_id: 'order123',
     merchant_return_url: 'https://www.example.org/my-webshop',
-    payment_brand: Omnikassa2::PaymentBrand::IDEAL
+    payment_brand: Omnikassa2::PaymentBrand::IDEAL,
     payment_brand_force: Omnikassa2::PaymentBrand::FORCE_ALWAYS
   )
 )

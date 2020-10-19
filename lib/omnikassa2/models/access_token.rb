@@ -22,7 +22,6 @@ module Omnikassa2
         token: hash[:token],
         valid_until: Time.parse(hash[:validUntil]),
         duration_in_millis: hash[:durationInMillis]
-
       }
 
       AccessToken.new(params)

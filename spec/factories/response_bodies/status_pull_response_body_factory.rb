@@ -1,7 +1,9 @@
 # frozen_string_literal: true
 
-class StatusPullResponseBodyFactory
-  def self.create(params, config)
+module StatusPullResponseBodyFactory
+  module_function
+
+  def create(params, config)
     body = {
       signature: params.fetch(:signature, :valid_signature),
       moreOrderResultsAvailable: params.fetch(:moreOrderResultsAvailable, false),

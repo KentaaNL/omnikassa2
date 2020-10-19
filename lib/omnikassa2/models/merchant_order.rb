@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'time'
+
 module Omnikassa2
   class MerchantOrder
     attr_reader :merchant_return_url

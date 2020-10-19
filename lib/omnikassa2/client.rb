@@ -2,35 +2,12 @@
 
 module Omnikassa2
   class Client
-    attr_reader :refresh_token
+    attr_reader :refresh_token, :signing_key, :base_rl
 
     def initialize(refresh_token:, signing_key:, base_url: :production)
       @refresh_token = refresh_token
       @signing_key = signing_key
       @base_url = base_url
-    end
-
-    def config
-      {
-        base_url: base_url,
-        signing_key: signing_key,
-        refresh_token: refresh_token
-      }
-    end
-
-    def signing_key
-      Base64.decode64(@signing_key)
-    end
-
-    def base_url
-      case @base_url
-      when :production
-        'https://betalen.rabobank.nl/omnikassa-api'
-      when :sandbox
-        'https://betalen.rabobank.nl/omnikassa-api-sandbox'
-      else
-        @base_url
-      end
     end
 
     def announce_order(order_announcement)
@@ -57,6 +34,16 @@ module Omnikassa2
 
         more_results_available = result_set.more_order_results_available
       end
+    end
+
+    private
+
+    def config
+      {
+        base_url: base_url,
+        signing_key: signing_key,
+        refresh_token: refresh_token
+      }
     end
   end
 end

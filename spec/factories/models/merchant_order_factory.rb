@@ -1,7 +1,9 @@
 # frozen_string_literal: true
 
-class MerchantOrderFactory
-  def self.create(params = {})
+module MerchantOrderFactory
+  module_function
+
+  def create(params = {})
     Omnikassa2::MerchantOrder.new(
       {
         merchant_order_id: 'order123',

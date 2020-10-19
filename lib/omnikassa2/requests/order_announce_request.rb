@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require 'omnikassa2/requests/base_request'
-require 'time'
 
 module Omnikassa2
   class OrderAnnounceRequest < BaseRequest

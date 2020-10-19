@@ -7,7 +7,7 @@ describe Omnikassa2::Client do
     end
 
     let(:config) { ConfigurationFactory.create }
-    let(:client) { Omnikassa2::Client.new(signing_key: Base64.encode64(config[:signing_key]), refresh_token: config[:refresh_token]) }
+    let(:client) { Omnikassa2::Client.new(signing_key: config[:signing_key], refresh_token: config[:refresh_token]) }
 
     context 'with expiring notification' do
       let(:expiring_notification) do

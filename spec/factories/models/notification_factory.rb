@@ -1,7 +1,9 @@
 # frozen_string_literal: true
 
-class NotificationFactory
-  def self.create(params, config)
+module NotificationFactory
+  module_function
+
+  def create(params, config)
     create_params = {
       authentication: params.fetch(:authentication, 'n0tificati0nT0ken'),
       expiry: params.fetch(:expiry, Time.parse('2016-11-25T09:53:46.123+01:00')),

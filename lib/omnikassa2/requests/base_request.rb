@@ -3,9 +3,9 @@
 module Omnikassa2
   class BaseRequest
     def initialize(config)
-      @base_url = config.fetch(:base_url)
-      @refresh_token = config.fetch(:refresh_token)
-      @access_token = config.fetch(:access_token, Omnikassa2::AccessTokenProvider.new(config))
+      @config = config
+      access_token = @config.fetch(:access_token, Omnikassa2::AccessTokenProvider.new(@config))
+      @config.merge!(access_token: access_token)
     end
 
     def http_method
@@ -48,7 +48,7 @@ module Omnikassa2
         http.request(request)
       end
 
-      response_decorator.nil? ? http_response : response_decorator.new(http_response, { base_url: @base_url, refresh_token: @refresh_token, access_token: @access_token })
+      response_decorator.nil? ? http_response : response_decorator.new(http_response, @config)
     end
 
     def headers
@@ -59,6 +59,17 @@ module Omnikassa2
     end
 
     private
+
+    def base_url
+      case @config[:base_url]
+      when :production
+        'https://betalen.rabobank.nl/omnikassa-api'
+      when :sandbox
+        'https://betalen.rabobank.nl/omnikassa-api-sandbox'
+      else
+        @config[:base_url]
+      end
+    end
 
     def body_raw
       return nil if body.nil?
@@ -85,16 +96,16 @@ module Omnikassa2
     end
 
     def uri
-      tmp_url = @base_url + path
+      tmp_url = base_url + path
       URI(tmp_url)
     end
 
     def add_authorization_header(value)
       case authorization_method
       when :refresh_token
-        value['Authorization'] = "Bearer #{@refresh_token}"
+        value['Authorization'] = "Bearer #{@config[:refresh_token]}"
       when :access_token
-        value['Authorization'] = "Bearer #{@access_token}"
+        value['Authorization'] = "Bearer #{@config[:access_token]}"
       when :custom_token
         value['Authorization'] = "Bearer #{custom_token}"
       end

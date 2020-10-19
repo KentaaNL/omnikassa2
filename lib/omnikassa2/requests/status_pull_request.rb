@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require 'omnikassa2/requests/base_request'
-require 'omnikassa2'
 
 module Omnikassa2
   class StatusPullRequest < BaseRequest

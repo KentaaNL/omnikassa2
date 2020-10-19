@@ -18,7 +18,7 @@ And then execute:
     $ bundle
 
 
-## Configuration
+## Initialization
 You can find your `refresh_token` and `signing_key` in OmniKassa's dashboard. The `base_url` corresponds with the base_url of the OmniKassa 2.0 API. You can use `:sandbox` or `:production` as well.
 
 ```ruby
@@ -35,16 +35,21 @@ For [Status Pull](#status-pull), it is required to configure a webhook as well (
 ```ruby
 response = client.announce_order(
   Omnikassa2::MerchantOrder.new(
-    merchant_order_id: 'order123',
     amount: Omnikassa2::Money.new(
-      amount: 4999,
+      amount: 4999, # in cents
       currency: 'EUR'
     ),
-    merchant_return_url: 'https://www.example.org/my-webshop'
+    description: 'order description',
+    language: 'NL',
+    merchant_order_id: 'order123',
+    merchant_return_url: 'https://www.example.org/my-webshop',
+    payment_brand: Omnikassa2::PaymentBrand::IDEAL
+    payment_brand_force: Omnikassa2::PaymentBrand::FORCE_ALWAYS
   )
 )
 
 redirect_url = response.redirect_url
+omnikassa_order_id = response.omnikassa_order_id
 
 # Send client to 'redirect_url'
 ```

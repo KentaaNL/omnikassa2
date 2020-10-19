@@ -35,8 +35,8 @@ describe Omnikassa2::OrderAnnounceRequest do
   let(:merchant_order) do
     MerchantOrderFactory.create(
       base_params.merge(
-        payment_brand: 'IDEAL',
-        payment_brand_force: 'FORCE_ALWAYS'
+        payment_brand: Omnikassa2::PaymentBrand::IDEAL,
+        payment_brand_force: Omnikassa2::PaymentBrand::FORCE_ALWAYS
       )
     )
   end
@@ -127,7 +127,7 @@ describe Omnikassa2::OrderAnnounceRequest do
         order_announce_request.send_request
 
         assert_requested(:any, //) do |request|
-          JSON.parse(request.body)['paymentBrand'] == 'IDEAL'
+          JSON.parse(request.body)['paymentBrand'] == Omnikassa2::PaymentBrand::IDEAL
         end
       end
 
@@ -135,7 +135,7 @@ describe Omnikassa2::OrderAnnounceRequest do
         order_announce_request.send_request
 
         assert_requested(:any, //) do |request|
-          JSON.parse(request.body)['paymentBrandForce'] == 'FORCE_ALWAYS'
+          JSON.parse(request.body)['paymentBrandForce'] == Omnikassa2::PaymentBrand::FORCE_ALWAYS
         end
       end
     end

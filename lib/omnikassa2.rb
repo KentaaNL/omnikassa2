@@ -19,6 +19,8 @@ require 'omnikassa2/models/money'
 require 'omnikassa2/models/notification'
 require 'omnikassa2/models/order_result_set'
 require 'omnikassa2/models/order_result'
+require 'omnikassa2/models/order_status'
+require 'omnikassa2/models/payment_brand'
 
 require 'omnikassa2/requests/base_request'
 require 'omnikassa2/requests/order_announce_request'

@@ -19,7 +19,7 @@ describe Omnikassa2::OrderResultSet do
           merchantOrderId: 'order123',
           omnikassaOrderId: '1d0a95f4-2589-439b-9562-c50aa19f9caf',
           poiId: '2004',
-          orderStatus: 'CANCELLED',
+          orderStatus: Omnikassa2::OrderStatus::CANCELLED,
           orderStatusDateTime: '2016-11-25T13:20:03.157+01:00',
           errorCode: '',
           paidAmount: {
@@ -67,7 +67,7 @@ describe Omnikassa2::OrderResultSet do
     end
 
     it 'stores order.orderStatus' do
-      expect(order.order_status).to eq('CANCELLED')
+      expect(order.order_status).to eq(Omnikassa2::OrderStatus::CANCELLED)
     end
 
     it 'stores order.orderStatusDateTime as Time' do

@@ -34,7 +34,7 @@ module Omnikassa2
       value = extract_value object, field
       value = value.iso8601(3) if value.is_a?(Time)
 
-      if value.nil?
+      if value.nil? || (value.is_a?(Array) && value.empty?)
         include_if_nil ? '' : nil
       elsif nested_fields.nil?
         value

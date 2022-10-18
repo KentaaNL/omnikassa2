@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require 'json'
 require 'omnikassa2/models/access_token'
 require 'timecop'
 require 'time'

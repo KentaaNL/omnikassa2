@@ -4,6 +4,7 @@ require 'openssl'
 require 'net/http'
 require 'uri'
 require 'base64'
+require 'json'
 
 require 'omnikassa2/version'
 require 'omnikassa2/client'

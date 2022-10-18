@@ -120,4 +120,23 @@ describe Omnikassa2::CSVSerializer do
 
     expect(csv_string).to eq('Hello World,123')
   end
+
+  it 'ignore empty nested array' do
+    exporter = Omnikassa2::CSVSerializer.new([
+      { field: :more_order_results_available },
+      {
+        field: :order_results,
+        nested_fields: [
+          { field: :merchant_order_id }
+        ]
+      }
+    ])
+
+    csv_string = exporter.serialize(
+      more_order_results_available: false,
+      order_results: []
+    )
+
+    expect(csv_string).to eq('false')
+  end
 end

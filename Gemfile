@@ -8,9 +8,9 @@ git_source(:github) { |repo_name| "https://github.com/#{repo_name}" }
 gemspec
 
 group :development, :test do
-  gem 'rubocop', '~> 0.93.1'
+  gem 'rubocop', '~> 1.69'
 
-  gem 'rspec', '~> 3.9.0'
+  gem 'rspec', '~> 3.13.0'
   gem 'timecop', '~> 0.9.1'
-  gem 'webmock', '~> 3.4.2'
+  gem 'webmock', '~> 3.24.0'
 end

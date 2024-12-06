@@ -10,7 +10,6 @@ gemspec
 group :development, :test do
   gem 'rubocop', '~> 0.93.1'
 
-  gem 'pry-byebug', '~> 3.6.0'
   gem 'rspec', '~> 3.9.0'
   gem 'timecop', '~> 0.9.1'
   gem 'webmock', '~> 3.4.2'

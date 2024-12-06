@@ -67,6 +67,3 @@ DEPENDENCIES
   rubocop (~> 0.93.1)
   timecop (~> 0.9.1)
   webmock (~> 3.4.2)
-
-BUNDLED WITH
-   2.1.4

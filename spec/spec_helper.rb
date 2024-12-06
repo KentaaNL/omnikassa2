@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require 'webmock/rspec'
-require 'pry'
 require 'time'
 require 'timecop'
 require 'omnikassa2'

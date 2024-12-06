@@ -29,7 +29,7 @@ module Omnikassa2
     def to_s
       value = ''
       value += "Status: #{code}: #{message}\n"
-      value += "Body: #{(body ? body.to_s : 'nil')}"
+      value += "Body: #{body ? body.to_s : 'nil'}"
       value
     end
   end

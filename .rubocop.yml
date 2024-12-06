@@ -5,6 +5,10 @@ AllCops:
   NewCops: enable
 
 
+Gemspec/DevelopmentDependencies:
+  Enabled: false
+
+
 Layout/FirstArrayElementIndentation:
   EnforcedStyle: consistent
 

@@ -8,9 +8,8 @@ module Omnikassa2
 
     def serialize(object)
       objects = object.is_a?(Array) ? object : [object]
-      parts = []
-      objects.each do |item|
-        parts << extract_fields(item).join(',')
+      parts = objects.map do |item|
+        extract_fields(item).join(',')
       end
       parts.join(',')
     end

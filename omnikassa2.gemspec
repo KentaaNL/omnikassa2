@@ -15,7 +15,9 @@ Gem::Specification.new do |spec|
   spec.description   = "Omnikassa2 is a gem for Rabobank's Omnikassa 2.0"
   spec.homepage      = 'https://github.com/KentaaNL/omnikassa2'
 
-  spec.files         = `git ls-files -z`.split("\x0").reject do |f|
+  spec.metadata['rubygems_mfa_required'] = 'true'
+
+  spec.files = `git ls-files -z`.split("\x0").reject do |f|
     f.match(%r{^(test|spec|features)/})
   end
 

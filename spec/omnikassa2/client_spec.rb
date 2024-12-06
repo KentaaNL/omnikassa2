@@ -2,7 +2,7 @@
 
 describe Omnikassa2::Client do
   describe '#status_pull' do
-    before(:each) do
+    before do
       Timecop.freeze Time.parse('2016-11-24T17:30:00.000+0000')
     end
 

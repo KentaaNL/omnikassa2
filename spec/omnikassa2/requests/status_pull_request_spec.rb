@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 describe Omnikassa2::StatusPullRequest do
-  before(:each) do
+  before do
     stub_request(:any, //).to_return(
       body: StatusPullResponseBodyFactory.create(
         {

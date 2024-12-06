@@ -1,3 +1,8 @@
+require:
+  - rubocop-performance
+  - rubocop-rake
+  - rubocop-rspec
+
 AllCops:
   TargetRubyVersion: 3.0
   DisplayCopNames: true
@@ -24,6 +29,25 @@ Metrics/BlockLength:
     - 'spec/**/*'
 
 Metrics/MethodLength:
+  Enabled: false
+
+
+RSpec/DescribedClass:
+  Enabled: false
+
+RSpec/ExampleLength:
+  Enabled: false
+
+RSpec/MultipleMemoizedHelpers:
+  Enabled: false
+
+RSpec/NamedSubject:
+  Enabled: false
+
+RSpec/NestedGroups:
+  Enabled: false
+
+RSpec/SpecFilePathFormat:
   Enabled: false
 
 

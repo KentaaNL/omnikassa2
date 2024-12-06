@@ -66,7 +66,7 @@ describe Omnikassa2::Notification do
       subject { Omnikassa2::Notification.new(base_params) }
 
       it 'returns true' do
-        expect(subject.valid_signature?(config[:signing_key])).to eq(true)
+        expect(subject.valid_signature?(config[:signing_key])).to be(true)
       end
     end
 
@@ -80,7 +80,7 @@ describe Omnikassa2::Notification do
       end
 
       it 'returns false' do
-        expect(subject.valid_signature?(config[:signing_key])).to eq(false)
+        expect(subject.valid_signature?(config[:signing_key])).to be(false)
       end
     end
   end
@@ -100,7 +100,7 @@ describe Omnikassa2::Notification do
       end
 
       it 'returns false' do
-        expect(subject.expiring?).to eq(false)
+        expect(subject.expiring?).to be(false)
       end
     end
 
@@ -114,7 +114,7 @@ describe Omnikassa2::Notification do
       end
 
       it 'returns true' do
-        expect(subject.expiring?).to eq(true)
+        expect(subject.expiring?).to be(true)
       end
     end
 
@@ -128,7 +128,7 @@ describe Omnikassa2::Notification do
       end
 
       it 'returns true' do
-        expect(subject.expiring?).to eq(true)
+        expect(subject.expiring?).to be(true)
       end
     end
   end

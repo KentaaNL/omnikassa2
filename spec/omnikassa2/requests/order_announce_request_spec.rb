@@ -4,7 +4,7 @@ require 'omnikassa2/requests/order_announce_request'
 require 'time'
 
 describe Omnikassa2::OrderAnnounceRequest do
-  before(:each) do
+  before do
     stub_request(:post, 'https://www.example.org/sandbox/order/server/api/v2/order').to_return(
       body: {
         signature: 's1gnaTuRe',

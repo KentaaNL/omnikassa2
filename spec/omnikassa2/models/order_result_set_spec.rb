@@ -50,7 +50,7 @@ describe Omnikassa2::OrderResultSet do
     end
 
     it 'stores moreOrderResultsAvailable as a boolean' do
-      expect(subject.more_order_results_available).to eq(false)
+      expect(subject.more_order_results_available).to be(false)
     end
 
     it 'stores order.merchantOrderId' do
@@ -103,7 +103,7 @@ describe Omnikassa2::OrderResultSet do
       end
 
       it 'returns true' do
-        expect(subject.valid_signature?(config[:signing_key])).to eq(true)
+        expect(subject.valid_signature?(config[:signing_key])).to be(true)
       end
     end
 
@@ -115,7 +115,7 @@ describe Omnikassa2::OrderResultSet do
       end
 
       it 'returns false' do
-        expect(subject.valid_signature?(config[:signing_key])).to eq(false)
+        expect(subject.valid_signature?(config[:signing_key])).to be(false)
       end
     end
   end

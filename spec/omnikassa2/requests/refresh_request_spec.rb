@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 describe Omnikassa2::RefreshRequest do
-  before(:each) do
+  before do
     stub_request(:any, //).to_return(
       body: {
         token: 'myAccEssT0ken',
@@ -49,7 +49,7 @@ describe Omnikassa2::RefreshRequest do
         end
 
         it 'contains duration_in_millis' do
-          expect(access_token.duration_in_millis).to eql(28_800_000)
+          expect(access_token.duration_in_millis).to be(28_800_000)
         end
       end
     end

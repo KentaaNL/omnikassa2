@@ -1,8 +1,7 @@
 # Omnikassa2
 
-This Gem provides the Ruby integration for the new OmniKassa 2.0 JSON API from the
-Rabobank. The documentation for this API is currently here:
-[Rabobank.nl](https://www.rabobank.nl/images/Handleiding_Rabo_OmniKassa_UK_29974797.pdf)
+This gem provides the Ruby integration for the Rabo Smart Pay API (previously known as OmniKassa 2.0) from the Rabobank.
+The documentation for this API is currently here: [developer.rabobank.nl](https://developer.rabobank.nl/rabo-smart-pay-online-payment-api)
 
 
 ## Installation

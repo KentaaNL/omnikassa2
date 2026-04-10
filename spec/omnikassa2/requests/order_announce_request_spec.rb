@@ -2,7 +2,7 @@
 
 RSpec.describe Omnikassa2::OrderAnnounceRequest do
   subject(:order_announce_request) do
-    Omnikassa2::OrderAnnounceRequest.new(
+    described_class.new(
       merchant_order,
       config.merge(access_token: 'myAcCEssT0k3n')
     )
@@ -37,7 +37,7 @@ RSpec.describe Omnikassa2::OrderAnnounceRequest do
   end
 
   let(:minimal_order_announce_request) do
-    Omnikassa2::OrderAnnounceRequest.new(
+    described_class.new(
       minimal_merchant_order,
       config.merge(access_token: 'myAcCEssT0k3n')
     )

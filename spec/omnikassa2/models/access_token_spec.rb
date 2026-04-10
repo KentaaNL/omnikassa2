@@ -11,7 +11,7 @@ RSpec.describe Omnikassa2::AccessToken do
 
   context 'when creating from JSON' do
     subject(:access_token) do
-      Omnikassa2::AccessToken.from_json(
+      described_class.from_json(
         JSON.generate(
           token: base_params[:token],
           validUntil: '2016-11-24T17:30:00.123+0000',
@@ -42,7 +42,7 @@ RSpec.describe Omnikassa2::AccessToken do
 
     context 'when valid_until is at least 5 minutes from now' do
       subject(:access_token) do
-        Omnikassa2::AccessToken.new(
+        described_class.new(
           base_params.merge(
             valid_until: Time.parse('2016-11-24T17:45:00.000+0000')
           )
@@ -56,7 +56,7 @@ RSpec.describe Omnikassa2::AccessToken do
 
     context 'when valid_until is less than 5 minutes from now' do
       subject(:access_token) do
-        Omnikassa2::AccessToken.new(
+        described_class.new(
           base_params.merge(
             valid_until: Time.parse('2016-11-24T17:31:00.000+0000')
           )
@@ -70,7 +70,7 @@ RSpec.describe Omnikassa2::AccessToken do
 
     context 'when valid_until is in the past' do
       subject(:access_token) do
-        Omnikassa2::AccessToken.new(
+        described_class.new(
           base_params.merge(
             valid_until: Time.parse('2016-11-24T17:25:00.000+0000')
           )

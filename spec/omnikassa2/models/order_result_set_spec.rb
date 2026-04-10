@@ -34,7 +34,7 @@ RSpec.describe Omnikassa2::OrderResultSet do
 
   context 'when creating from JSON' do
     subject(:order_result_set) do
-      Omnikassa2::OrderResultSet.from_json(
+      described_class.from_json(
         JSON.generate(json_params)
       )
     end
@@ -93,7 +93,7 @@ RSpec.describe Omnikassa2::OrderResultSet do
   describe 'signature_valid?' do
     context 'when signature is valid' do
       subject(:order_result_set) do
-        Omnikassa2::OrderResultSet.from_json(
+        described_class.from_json(
           JSON.generate(json_params)
         )
       end
@@ -105,7 +105,7 @@ RSpec.describe Omnikassa2::OrderResultSet do
 
     context 'when signature is not valid' do
       subject(:order_result_set) do
-        Omnikassa2::OrderResultSet.from_json(
+        described_class.from_json(
           JSON.generate(json_params.merge(signature: 'invalidSignature'))
         )
       end

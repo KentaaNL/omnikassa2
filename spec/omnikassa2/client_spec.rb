@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 RSpec.describe Omnikassa2::Client do
-  subject(:client) { Omnikassa2::Client.new(signing_key: config[:signing_key], refresh_token: config[:refresh_token]) }
+  subject(:client) { described_class.new(signing_key: config[:signing_key], refresh_token: config[:refresh_token]) }
 
   let(:config) { ConfigurationFactory.create }
 

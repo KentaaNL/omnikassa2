@@ -2,7 +2,7 @@
 
 RSpec.describe Omnikassa2::CSVSerializer do
   it 'includes single value' do
-    exporter = Omnikassa2::CSVSerializer.new([
+    exporter = described_class.new([
       { field: :field_one }
     ])
 
@@ -14,7 +14,7 @@ RSpec.describe Omnikassa2::CSVSerializer do
   end
 
   it 'ignores unconfigured fields' do
-    exporter = Omnikassa2::CSVSerializer.new([
+    exporter = described_class.new([
       { field: :field_one }
     ])
 
@@ -27,7 +27,7 @@ RSpec.describe Omnikassa2::CSVSerializer do
   end
 
   it 'includes multiple values' do
-    exporter = Omnikassa2::CSVSerializer.new([
+    exporter = described_class.new([
       { field: :field_one },
       { field: :field_two }
     ])
@@ -41,7 +41,7 @@ RSpec.describe Omnikassa2::CSVSerializer do
   end
 
   it 'respects the order of the fields passed in config' do
-    exporter = Omnikassa2::CSVSerializer.new([
+    exporter = described_class.new([
       { field: :field_one },
       { field: :field_two }
     ])
@@ -55,7 +55,7 @@ RSpec.describe Omnikassa2::CSVSerializer do
   end
 
   it 'does not include nil values for fields without \'include_if_nil: true\'' do
-    exporter = Omnikassa2::CSVSerializer.new([
+    exporter = described_class.new([
       { field: :field_one },
       { field: :field_two }
     ])
@@ -69,7 +69,7 @@ RSpec.describe Omnikassa2::CSVSerializer do
   end
 
   it 'does not include nil values for fields with \'include_if_nil: true\'' do
-    exporter = Omnikassa2::CSVSerializer.new([
+    exporter = described_class.new([
       { field: :field_one },
       { field: :field_two, include_if_nil: true }
     ])
@@ -83,7 +83,7 @@ RSpec.describe Omnikassa2::CSVSerializer do
   end
 
   it 'supports nested values' do
-    exporter = Omnikassa2::CSVSerializer.new([
+    exporter = described_class.new([
       {
         field: :outer,
         nested_fields: [
@@ -102,7 +102,7 @@ RSpec.describe Omnikassa2::CSVSerializer do
   end
 
   it 'supports repeating array values' do
-    exporter = Omnikassa2::CSVSerializer.new([
+    exporter = described_class.new([
       {
         field: :outer,
         nested_fields: [
@@ -122,7 +122,7 @@ RSpec.describe Omnikassa2::CSVSerializer do
   end
 
   it 'ignores empty nested arrays' do
-    exporter = Omnikassa2::CSVSerializer.new([
+    exporter = described_class.new([
       { field: :more_order_results_available },
       {
         field: :order_results,

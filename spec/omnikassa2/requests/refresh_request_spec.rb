@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 RSpec.describe Omnikassa2::RefreshRequest do
-  subject(:refresh_request) { Omnikassa2::RefreshRequest.new(config) }
+  subject(:refresh_request) { described_class.new(config) }
 
   let(:config) { ConfigurationFactory.create(refresh_token: 'reFresht0ken') }
 

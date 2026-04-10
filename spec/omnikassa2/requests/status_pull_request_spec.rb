@@ -2,7 +2,7 @@
 
 RSpec.describe Omnikassa2::StatusPullRequest do
   subject(:status_pull_request) do
-    Omnikassa2::StatusPullRequest.new(notification_token, config)
+    described_class.new(notification_token, config)
   end
 
   before do

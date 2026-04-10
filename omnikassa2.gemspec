@@ -5,8 +5,8 @@ require_relative 'lib/omnikassa2/version'
 Gem::Specification.new do |spec|
   spec.name          = 'omnikassa2'
   spec.version       = Omnikassa2::VERSION
-  spec.authors       = ['Aike de Jongste', 'Arnout de Mooij', 'Luc Zwanenberg', 'Kentaa BV']
-  spec.email         = ['support@kentaa.nl']
+  spec.authors       = ['Aike de Jongste', 'Arnout de Mooij', 'Luc Zwanenberg', 'Kentaa', 'iRaiser']
+  spec.email         = ['tech-arnhem@iraiser.eu']
   spec.license       = 'MIT'
 
   spec.summary       = 'Omnikassa2 is a gem for the Rabo Smart Pay API (previously OmniKassa 2.0)'

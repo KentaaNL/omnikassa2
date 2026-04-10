@@ -144,7 +144,10 @@ RSpec.describe Omnikassa2::OrderAnnounceRequest do
     end
 
     it 'raises a ConnectionError' do
-      expect { order_announce_request.send_request }.to raise_error(Omnikassa2::ConnectionError)
+      expect { order_announce_request.send_request }.to raise_error(Omnikassa2::ConnectionError) do |exception|
+        expect(exception.message).to eq('execution expired')
+        expect(exception.cause).to be_a(Net::OpenTimeout)
+      end
     end
   end
 end

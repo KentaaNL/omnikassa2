@@ -22,7 +22,7 @@ RSpec.describe Omnikassa2::Notification do
   end
 
   context 'when creating from JSON' do
-    subject do
+    subject(:notification) do
       Omnikassa2::Notification.from_json(
         JSON.generate(
           authentication: base_params[:authentication],
@@ -35,39 +35,39 @@ RSpec.describe Omnikassa2::Notification do
     end
 
     it 'stores authentication as string' do
-      expect(subject.authentication).to eq(authentication_token)
+      expect(notification.authentication).to eq(authentication_token)
     end
 
     it 'stores expiry as DateTime' do
-      expect(subject.expiry).to eq(
+      expect(notification.expiry).to eq(
         Time.parse('2016-11-25T09:53:46.765+01:00')
       )
     end
 
     it 'stores event_name as string' do
-      expect(subject.event_name).to eq('merchant.order.status.changed')
+      expect(notification.event_name).to eq('merchant.order.status.changed')
     end
 
     it 'stores poi_id as integer' do
-      expect(subject.poi_id).to eq(123)
+      expect(notification.poi_id).to eq(123)
     end
 
     it 'stores signature as string' do
-      expect(subject.signature).to eq(signature)
+      expect(notification.signature).to eq(signature)
     end
   end
 
   describe 'signature_valid?' do
     context 'when signature is valid' do
-      subject { Omnikassa2::Notification.new(base_params) }
+      subject(:notification) { Omnikassa2::Notification.new(base_params) }
 
       it 'returns true' do
-        expect(subject.valid_signature?(config[:signing_key])).to be(true)
+        expect(notification.valid_signature?(config[:signing_key])).to be(true)
       end
     end
 
     context 'when signature is not valid' do
-      subject do
+      subject(:notification) do
         Omnikassa2::Notification.new(
           base_params.merge(
             signature: 'invalidSignature'
@@ -76,7 +76,7 @@ RSpec.describe Omnikassa2::Notification do
       end
 
       it 'returns false' do
-        expect(subject.valid_signature?(config[:signing_key])).to be(false)
+        expect(notification.valid_signature?(config[:signing_key])).to be(false)
       end
     end
   end
@@ -87,7 +87,7 @@ RSpec.describe Omnikassa2::Notification do
     end
 
     context 'when expiry date is at least 5 minutes from now' do
-      subject do
+      subject(:notification) do
         Omnikassa2::Notification.new(
           base_params.merge(
             expiry: Time.parse('2016-11-24T17:45:00.000+0000')
@@ -96,12 +96,12 @@ RSpec.describe Omnikassa2::Notification do
       end
 
       it 'returns false' do
-        expect(subject.expiring?).to be(false)
+        expect(notification.expiring?).to be(false)
       end
     end
 
     context 'when expiry date is less than 30 seconds from now' do
-      subject do
+      subject(:notification) do
         Omnikassa2::Notification.new(
           base_params.merge(
             expiry: Time.parse('2016-11-24T17:30:29.000+0000')
@@ -110,12 +110,12 @@ RSpec.describe Omnikassa2::Notification do
       end
 
       it 'returns true' do
-        expect(subject.expiring?).to be(true)
+        expect(notification.expiring?).to be(true)
       end
     end
 
     context 'when expiry date is in the past' do
-      subject do
+      subject(:notification) do
         Omnikassa2::Notification.new(
           base_params.merge(
             expiry: Time.parse('2016-11-24T17:25:00.000+0000')
@@ -124,7 +124,7 @@ RSpec.describe Omnikassa2::Notification do
       end
 
       it 'returns true' do
-        expect(subject.expiring?).to be(true)
+        expect(notification.expiring?).to be(true)
       end
     end
   end

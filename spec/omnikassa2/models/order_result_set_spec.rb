@@ -33,20 +33,20 @@ RSpec.describe Omnikassa2::OrderResultSet do
   let(:config) { ConfigurationFactory.create(signing_key: 'myS1gningK3y') }
 
   context 'when creating from JSON' do
-    subject do
+    subject(:order_result_set) do
       Omnikassa2::OrderResultSet.from_json(
         JSON.generate(json_params)
       )
     end
 
-    let(:order) { subject.order_results.first }
+    let(:order) { order_result_set.order_results.first }
 
     it 'stores signature as string' do
-      expect(subject.signature).to eq(signature)
+      expect(order_result_set.signature).to eq(signature)
     end
 
     it 'stores moreOrderResultsAvailable as a boolean' do
-      expect(subject.more_order_results_available).to be(false)
+      expect(order_result_set.more_order_results_available).to be(false)
     end
 
     it 'stores order.merchantOrderId' do
@@ -92,26 +92,26 @@ RSpec.describe Omnikassa2::OrderResultSet do
 
   describe 'signature_valid?' do
     context 'when signature is valid' do
-      subject do
+      subject(:order_result_set) do
         Omnikassa2::OrderResultSet.from_json(
           JSON.generate(json_params)
         )
       end
 
       it 'returns true' do
-        expect(subject.valid_signature?(config[:signing_key])).to be(true)
+        expect(order_result_set.valid_signature?(config[:signing_key])).to be(true)
       end
     end
 
     context 'when signature is not valid' do
-      subject do
+      subject(:order_result_set) do
         Omnikassa2::OrderResultSet.from_json(
           JSON.generate(json_params.merge(signature: 'invalidSignature'))
         )
       end
 
       it 'returns false' do
-        expect(subject.valid_signature?(config[:signing_key])).to be(false)
+        expect(order_result_set.valid_signature?(config[:signing_key])).to be(false)
       end
     end
   end

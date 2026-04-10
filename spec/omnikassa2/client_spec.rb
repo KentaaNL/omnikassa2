@@ -40,11 +40,14 @@ RSpec.describe Omnikassa2::Client do
           )
 
         stub_request(:post, 'https://betalen.rabobank.nl/omnikassa-api/order/server/api/v2/order')
-          .to_return(status: 500, body: 'Internal Server Error')
+          .to_return(status: [500, 'Internal Server Error'], body: 'Internal Server Error')
       end
 
       it 'raises an HttpError' do
-        expect { client.announce_order(merchant_order) }.to raise_error(Omnikassa2::HttpError)
+        expect { client.announce_order(merchant_order) }.to raise_error(Omnikassa2::HttpError) do |exception|
+          expect(exception.message).to eq("Status: 500: Internal Server Error\nBody: {}")
+          expect(exception.cause).to be_nil
+        end
       end
     end
 
@@ -90,6 +93,38 @@ RSpec.describe Omnikassa2::Client do
 
       it 'triggers an error' do
         expect { client.status_pull(notification_with_invalid_signature) }.to raise_error(Omnikassa2::InvalidSignatureError)
+      end
+    end
+
+    context 'when API returns HTTP 500' do
+      before do
+        stub_request(:get, 'https://betalen.rabobank.nl/omnikassa-api/order/server/api/events/results/merchant.order.status.changed')
+          .to_return(status: [502, 'Internal Server Error'], body: 'Internal Server Error')
+      end
+
+      let(:notification) { NotificationFactory.create({}, config) }
+
+      it 'raises an HttpError' do
+        expect { client.status_pull(notification) }.to raise_error(Omnikassa2::HttpError) do |exception|
+          expect(exception.message).to eq("Status: 502: Internal Server Error\nBody: {}")
+          expect(exception.cause).to be_nil
+        end
+      end
+    end
+
+    context 'when request times out' do
+      before do
+        stub_request(:get, 'https://betalen.rabobank.nl/omnikassa-api/order/server/api/events/results/merchant.order.status.changed')
+          .to_timeout
+      end
+
+      let(:notification) { NotificationFactory.create({}, config) }
+
+      it 'raises a ConnectionError' do
+        expect { client.status_pull(notification) }.to raise_error(Omnikassa2::ConnectionError) do |exception|
+          expect(exception.message).to eq('execution expired')
+          expect(exception.cause).to be_a(Net::OpenTimeout)
+        end
       end
     end
   end

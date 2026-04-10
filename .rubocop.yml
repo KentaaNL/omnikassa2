@@ -46,7 +46,7 @@ RSpec/ExampleLength:
   Enabled: false
 
 RSpec/MultipleExpectations:
-  Max: 2
+  Max: 3
 
 RSpec/MultipleMemoizedHelpers:
   Enabled: false

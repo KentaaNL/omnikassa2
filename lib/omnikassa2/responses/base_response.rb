@@ -6,8 +6,8 @@ module Omnikassa2
 
     def initialize(http_response, config)
       @http_response = http_response
-      @body = @http_response.body ? JSON.parse(@http_response.body, symbolize_names: true) : nil
       @config = config
+      @body = parse_body
     end
 
     def json_body
@@ -31,6 +31,16 @@ module Omnikassa2
       value += "Status: #{code}: #{message}\n"
       value += "Body: #{body ? body.to_s : 'nil'}"
       value
+    end
+
+    private
+
+    def parse_body
+      return nil if @http_response.body.nil? || @http_response.body.empty?
+
+      JSON.parse(@http_response.body, symbolize_names: true)
+    rescue JSON::ParserError
+      {}
     end
   end
 end

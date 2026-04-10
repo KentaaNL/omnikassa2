@@ -1,6 +1,13 @@
 # frozen_string_literal: true
 
 RSpec.describe Omnikassa2::OrderAnnounceRequest do
+  subject(:order_announce_request) do
+    Omnikassa2::OrderAnnounceRequest.new(
+      merchant_order,
+      config.merge(access_token: 'myAcCEssT0k3n')
+    )
+  end
+
   let(:base_params) do
     {
       merchant_order_id: 'order123',
@@ -32,13 +39,6 @@ RSpec.describe Omnikassa2::OrderAnnounceRequest do
   let(:minimal_order_announce_request) do
     Omnikassa2::OrderAnnounceRequest.new(
       minimal_merchant_order,
-      config.merge(access_token: 'myAcCEssT0k3n')
-    )
-  end
-
-  let(:order_announce_request) do
-    Omnikassa2::OrderAnnounceRequest.new(
-      merchant_order,
       config.merge(access_token: 'myAcCEssT0k3n')
     )
   end

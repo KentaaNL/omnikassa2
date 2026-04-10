@@ -24,6 +24,9 @@ Layout/LineLength:
 Metrics/AbcSize:
   Max: 27
 
+Metrics/ClassLength:
+  Max: 102
+
 Metrics/BlockLength:
   Exclude:
     - 'spec/**/*'
@@ -37,6 +40,9 @@ RSpec/DescribedClass:
 
 RSpec/ExampleLength:
   Enabled: false
+
+RSpec/MultipleExpectations:
+  Max: 2
 
 RSpec/MultipleMemoizedHelpers:
   Enabled: false

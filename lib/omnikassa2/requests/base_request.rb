@@ -43,7 +43,9 @@ module Omnikassa2
       http_response = Net::HTTP.start(
         uri.hostname,
         uri.port,
-        use_ssl: true
+        use_ssl: true,
+        open_timeout: Omnikassa2.config.open_timeout,
+        read_timeout: Omnikassa2.config.read_timeout
       ) do |http|
         http.request(request)
       end

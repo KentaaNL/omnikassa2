@@ -32,3 +32,30 @@ require 'omnikassa2/responses/base_response'
 require 'omnikassa2/responses/order_announce_response'
 require 'omnikassa2/responses/refresh_response'
 require 'omnikassa2/responses/status_pull_response'
+
+# :nodoc:
+module Omnikassa2
+  # Holds the global Omnikassa2 configuration.
+  class Configuration
+    attr_accessor :open_timeout, :read_timeout
+
+    def initialize
+      @open_timeout = 30
+      @read_timeout = 30
+    end
+  end
+
+  class << self
+    def config
+      @config ||= Configuration.new
+    end
+
+    def configure
+      yield(config)
+    end
+
+    def reset!
+      @config = Configuration.new
+    end
+  end
+end

@@ -99,6 +99,18 @@ class MyOmnikassaWebhookController
 end
 ```
 
+## Configuration
+
+You can configure global settings using `Omnikassa2.configure`:
+
+```ruby
+Omnikassa2.configure do |config|
+  # Set Net::HTTP timeout values (in seconds)
+  config.open_timeout = 30
+  config.read_timeout = 30
+end
+```
+
 ## Contributing
 
 Bug reports and pull requests are welcome on GitHub at https://github.com/KentaaNL/omnikassa2.

@@ -62,6 +62,10 @@ RSpec.configure do |config|
   #   - http://rspec.info/blog/2014/05/notable-changes-in-rspec-3/#zero-monkey-patching-mode
   config.disable_monkey_patching!
 
+  # This setting enables warnings. It's recommended, but in some cases may
+  # be too noisy due to issues in dependencies.
+  config.warnings = true
+
   # The settings below are suggested to provide a good initial experience
   # with RSpec, but feel free to customize to your heart's content.
   #   # This allows you to limit a spec run to individual examples or groups
@@ -75,10 +79,6 @@ RSpec.configure do |config|
   #   # the `--only-failures` and `--next-failure` CLI options. We recommend
   #   # you configure your source control system to ignore this file.
   #   config.example_status_persistence_file_path = "spec/examples.txt"
-  #
-  #   # This setting enables warnings. It's recommended, but in some cases may
-  #   # be too noisy due to issues in dependencies.
-  #   config.warnings = true
   #
   #   # Many RSpec users commonly either run the entire suite or an individual
   #   # file, and it's useful to allow more verbose output when running an

@@ -121,7 +121,7 @@ RSpec.describe Omnikassa2::CSVSerializer do
     expect(csv_string).to eq('Hello World,123')
   end
 
-  it 'ignore empty nested array' do
+  it 'ignores empty nested arrays' do
     exporter = Omnikassa2::CSVSerializer.new([
       { field: :more_order_results_available },
       {

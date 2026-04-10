@@ -49,7 +49,7 @@ RSpec.describe Omnikassa2 do
       expect(Omnikassa2.config.read_timeout).to eq(30)
     end
 
-    it 'provides a fresh Config object' do
+    it 'provides a fresh config object' do
       old_config = Omnikassa2.config
       Omnikassa2.reset!
       expect(Omnikassa2.config).not_to eq(old_config)

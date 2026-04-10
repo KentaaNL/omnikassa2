@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-describe Omnikassa2::CSVSerializer do
+RSpec.describe Omnikassa2::CSVSerializer do
   it 'includes single value' do
     exporter = Omnikassa2::CSVSerializer.new([
       { field: :field_one }

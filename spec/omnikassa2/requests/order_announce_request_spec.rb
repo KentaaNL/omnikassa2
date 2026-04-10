@@ -3,7 +3,7 @@
 require 'omnikassa2/requests/order_announce_request'
 require 'time'
 
-describe Omnikassa2::OrderAnnounceRequest do
+RSpec.describe Omnikassa2::OrderAnnounceRequest do
   let(:base_params) do
     {
       merchant_order_id: 'order123',

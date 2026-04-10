@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-describe Omnikassa2::RefreshRequest do
+RSpec.describe Omnikassa2::RefreshRequest do
   before do
     stub_request(:any, //).to_return(
       body: {

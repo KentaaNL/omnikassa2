@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-describe Omnikassa2::SignatureService do
+RSpec.describe Omnikassa2::SignatureService do
   let(:config) { ConfigurationFactory.create(signing_key: 'myS1gningK3y') }
 
   it 'uses correct key and algorithm to create signature' do

@@ -49,6 +49,10 @@ module Omnikassa2
       end
 
       response_decorator.nil? ? http_response : response_decorator.new(http_response, @config)
+    rescue Errno::ETIMEDOUT, Errno::EINVAL, Errno::ECONNRESET, Errno::ECONNREFUSED, Errno::EHOSTUNREACH,
+           IOError, SocketError, Net::HTTPBadResponse, Net::HTTPHeaderSyntaxError, Net::OpenTimeout,
+           Net::ProtocolError, Net::ReadTimeout, OpenSSL::SSL::SSLError => e
+      raise ConnectionError, e
     end
 
     def headers

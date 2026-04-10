@@ -4,15 +4,6 @@ require 'omnikassa2/requests/order_announce_request'
 require 'time'
 
 describe Omnikassa2::OrderAnnounceRequest do
-  before do
-    stub_request(:post, 'https://www.example.org/sandbox/order/server/api/v2/order').to_return(
-      body: {
-        signature: 's1gnaTuRe',
-        redirectUrl: 'https://www.example.org/pay?token=S0meT0ken&?lang=nl'
-      }.to_json
-    )
-  end
-
   let(:base_params) do
     {
       merchant_order_id: 'order123',
@@ -56,6 +47,15 @@ describe Omnikassa2::OrderAnnounceRequest do
   end
 
   context 'when sent' do
+    before do
+      stub_request(:post, 'https://www.example.org/sandbox/order/server/api/v2/order').to_return(
+        body: {
+          signature: 's1gnaTuRe',
+          redirectUrl: 'https://www.example.org/pay?token=S0meT0ken&?lang=nl'
+        }.to_json
+      )
+    end
+
     it 'only invokes one requests' do
       order_announce_request.send_request
       assert_requested :any, //, times: 1
@@ -138,6 +138,16 @@ describe Omnikassa2::OrderAnnounceRequest do
           JSON.parse(request.body)['paymentBrandForce'] == Omnikassa2::PaymentBrand::FORCE_ALWAYS
         end
       end
+    end
+  end
+
+  context 'when connection error occurs' do
+    before do
+      stub_request(:post, 'https://www.example.org/sandbox/order/server/api/v2/order').to_timeout
+    end
+
+    it 'raises a ConnectionError' do
+      expect { order_announce_request.send_request }.to raise_error(Omnikassa2::ConnectionError)
     end
   end
 end

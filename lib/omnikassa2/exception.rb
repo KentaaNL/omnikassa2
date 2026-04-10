@@ -11,6 +11,9 @@ module Omnikassa2
   class ExpiringNotificationError < OmniKassaError
   end
 
+  class ConnectionError < OmniKassaError
+  end
+
   class HttpError < OmniKassaError
   end
 end

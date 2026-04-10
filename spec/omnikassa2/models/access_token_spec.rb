@@ -1,9 +1,5 @@
 # frozen_string_literal: true
 
-require 'omnikassa2/models/access_token'
-require 'timecop'
-require 'time'
-
 RSpec.describe Omnikassa2::AccessToken do
   let(:base_params) do
     {

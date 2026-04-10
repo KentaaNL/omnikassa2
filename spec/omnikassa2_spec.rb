@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'spec_helper'
-
 RSpec.describe Omnikassa2 do
   describe '.config' do
     it 'has default open_timeout and read_timeout' do

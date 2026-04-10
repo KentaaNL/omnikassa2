@@ -1,9 +1,5 @@
 # frozen_string_literal: true
 
-require 'omnikassa2/models/access_token'
-require 'timecop'
-require 'time'
-
 RSpec.describe Omnikassa2::OrderResultSet do
   let(:signature) do
     'c95d401cb42c28cd8754ff85776cb0b58dd0beab88610b6f78408ca906da68c921c6c80fecaed6325f15a2b86cb42a47484394f2ae6632099e5ce272837ae49a'
